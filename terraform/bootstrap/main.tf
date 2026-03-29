@@ -1,4 +1,4 @@
-# Remote state S3 bucket — locking via use_lockfile (Terraform >= 1.10, no DynamoDB needed)
+# Remote state S3 bucket
 terraform {
   required_version = ">= 1.10.0"
   required_providers {

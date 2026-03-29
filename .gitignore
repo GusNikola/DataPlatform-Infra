@@ -1,0 +1,15 @@
+# Terraform
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform.lock.hcl
+**/errored.tfstate
+
+# Secrets — never commit
+**/terraform.tfvars
+
+# Plans
+*.tfplan
+
+# OS
+.DS_Store
