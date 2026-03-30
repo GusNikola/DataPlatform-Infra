@@ -1,6 +1,9 @@
 opentelemetry-collector:
   mode: deployment
 
+  image:
+    repository: otel/opentelemetry-collector-contrib
+
   nodeSelector:
     role: system
 
