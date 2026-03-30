@@ -20,6 +20,9 @@ fluentbit:
           Flush         5
           Daemon        Off
           Log_Level     info
+          HTTP_Server   On
+          HTTP_Listen   0.0.0.0
+          HTTP_Port     2020
           storage.path  /var/log/fluentbit-buffers
           storage.sync  normal
           storage.checksum off
