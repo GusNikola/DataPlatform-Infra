@@ -18,7 +18,10 @@ kube-prometheus-stack:
     fullnameOverride: grafana
     nodeSelector:
       role: system
-    adminPassword: changeme
+    admin:
+      existingSecret: grafana-admin
+      userKey: admin-user
+      passwordKey: admin-password
     ingress:
       enabled: true
       ingressClassName: nginx

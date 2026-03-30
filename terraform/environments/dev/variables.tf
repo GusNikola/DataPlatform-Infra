@@ -61,6 +61,13 @@ variable "lets_encrypt_email" {
   type        = string
 }
 
+# Grafana
+variable "grafana_admin_password" {
+  description = "Grafana admin password — stored in tfvars, do not commit"
+  type        = string
+  sensitive   = true
+}
+
 # EKS
 variable "eks_public_access_cidrs" {
   description = "CIDRs allowed to access the EKS public API endpoint"

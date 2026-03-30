@@ -17,6 +17,7 @@ cloudflare_zone_id   = "0e75705411b03407fccf07286d74acfe"
 nlb_hostname         = "a8633a64340c3455e9b1c43df19fd6b0-d0a9831f6c50e62e.elb.eu-central-1.amazonaws.com"
 dns_records          = ["argocd", "grafana"]
 lets_encrypt_email   = "ngusic@europecloudatlas.com"
+grafana_admin_password = "0e75705411"
 
 # EKS
 eks_public_access_cidrs = ["24.135.66.25/32"]

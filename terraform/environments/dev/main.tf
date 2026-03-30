@@ -86,6 +86,24 @@ resource "kubernetes_manifest" "cluster_issuer" {
   depends_on = [kubernetes_secret.cloudflare_api_token]
 }
 
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    name = "monitoring"
+  }
+  depends_on = [module.eks]
+}
+
+resource "kubernetes_secret" "grafana_admin" {
+  metadata {
+    name      = "grafana-admin"
+    namespace = kubernetes_namespace.monitoring.metadata[0].name
+  }
+  data = {
+    admin-user     = "admin"
+    admin-password = var.grafana_admin_password
+  }
+}
+
 resource "cloudflare_dns_record" "services" {
   for_each = toset(var.dns_records)
 
