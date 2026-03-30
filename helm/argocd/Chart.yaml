@@ -1,0 +1,5 @@
+apiVersion: v2
+name: argocd
+description: ArgoCD ingress configuration
+type: application
+version: 0.1.0

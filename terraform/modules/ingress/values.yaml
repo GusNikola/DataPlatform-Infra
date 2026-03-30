@@ -1,0 +1,19 @@
+controller:
+  replicaCount: 2
+
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
+
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+
+  config:
+    use-forwarded-headers: "true"
+    proxy-real-ip-cidr: "10.0.0.0/16"
+    use-http2: "true"
+    ssl-redirect: "true"

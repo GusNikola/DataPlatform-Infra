@@ -24,6 +24,12 @@ variable "endpoint_public_access" {
   default     = false
 }
 
+variable "public_access_cidrs" {
+  description = "CIDRs allowed to access the EKS public API endpoint"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
 variable "node_groups" {
   description = "Map of node group name to configuration"
   type = map(object({

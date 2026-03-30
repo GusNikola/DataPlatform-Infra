@@ -31,11 +31,68 @@ module "vpc" {
 module "eks" {
   source = "../../modules/eks"
 
-  cluster_name           = local.name_prefix
-  kubernetes_version     = var.kubernetes_version
-  vpc_id                 = module.vpc.vpc_id
-  subnet_ids             = module.vpc.private_subnet_ids
-  endpoint_public_access = true
-  node_groups            = var.node_groups
-  tags                   = local.common_tags
+  cluster_name            = local.name_prefix
+  kubernetes_version      = var.kubernetes_version
+  vpc_id                  = module.vpc.vpc_id
+  subnet_ids              = module.vpc.private_subnet_ids
+  endpoint_public_access  = true
+  public_access_cidrs     = var.eks_public_access_cidrs
+  node_groups             = var.node_groups
+  tags                    = local.common_tags
+}
+
+module "ingress" {
+  source = "../../modules/ingress"
+
+  tags = local.common_tags
+
+  depends_on = [module.eks]
+}
+
+resource "kubernetes_secret" "cloudflare_api_token" {
+  metadata {
+    name      = "cloudflare-api-token"
+    namespace = "cert-manager"
+  }
+  data = {
+    api-token = var.cloudflare_api_token
+  }
+  depends_on = [module.ingress]
+}
+
+resource "kubernetes_manifest" "cluster_issuer" {
+  manifest = {
+    apiVersion = "cert-manager.io/v1"
+    kind       = "ClusterIssuer"
+    metadata = { name = "letsencrypt-prod" }
+    spec = {
+      acme = {
+        server              = "https://acme-v02.api.letsencrypt.org/directory"
+        email               = var.lets_encrypt_email
+        privateKeySecretRef = { name = "letsencrypt-prod" }
+        solvers = [{
+          dns01 = {
+            cloudflare = {
+              apiTokenSecretRef = {
+                name = "cloudflare-api-token"
+                key  = "api-token"
+              }
+            }
+          }
+        }]
+      }
+    }
+  }
+  depends_on = [kubernetes_secret.cloudflare_api_token]
+}
+
+resource "cloudflare_dns_record" "services" {
+  for_each = toset(var.dns_records)
+
+  zone_id = var.cloudflare_zone_id
+  name    = "${each.value}.gusnikola.com"
+  type    = "CNAME"
+  content = var.nlb_hostname
+  ttl     = 60
+  proxied = false
 }

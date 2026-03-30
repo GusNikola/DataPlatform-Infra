@@ -1,0 +1,5 @@
+ingress:
+  host: argocd.gusnikola.com
+  ingressClassName: nginx
+  tls:
+    secretName: argocd-tls
