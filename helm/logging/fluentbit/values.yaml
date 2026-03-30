@@ -15,6 +15,16 @@ fluentbit:
       memory: 128Mi
 
   config:
+    service: |
+      [SERVICE]
+          Flush         5
+          Daemon        Off
+          Log_Level     info
+          storage.path  /var/log/fluentbit-buffers
+          storage.sync  normal
+          storage.checksum off
+          storage.backlog.mem_limit 5MB
+
     inputs: |
       [INPUT]
           Name              tail
@@ -51,10 +61,6 @@ fluentbit:
           tls                   Off
           tls.verify            Off
           Suppress_Type_Name    On
-
-  # Filesystem buffer to handle ES restarts without losing logs
-  storage:
-    type: filesystem
 
   extraVolumes:
     - name: buffer
