@@ -20,13 +20,6 @@ elasticsearch:
     size: 30Gi
     storageClass: gp2
 
-  # Security disabled for dev — enable in prod
-  esConfig:
-    elasticsearch.yml: |
-      xpack.security.enabled: false
-      xpack.security.transport.ssl.enabled: false
-      xpack.security.http.ssl.enabled: false
-
   volumeClaimTemplate:
     storageClassName: gp2
     accessModes: ["ReadWriteOnce"]

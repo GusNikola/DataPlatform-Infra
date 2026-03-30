@@ -5,5 +5,5 @@ type: application
 version: 0.1.0
 dependencies:
   - name: elasticsearch
-    version: "8.5.1"
+    version: "7.17.3"
     repository: "https://helm.elastic.co"
