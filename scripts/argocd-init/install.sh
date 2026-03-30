@@ -22,6 +22,18 @@ ARGOCD_PASSWORD=$(kubectl get secret argocd-initial-admin-secret -n argocd \
 argocd login "$ARGOCD_HOST" --username admin --password "$ARGOCD_PASSWORD" --grpc-web
 argocd cluster add "$(kubectl config current-context)" --yes
 
+# Register upstream Helm repos so ArgoCD can resolve chart dependencies at sync time
+argocd repo add https://prometheus-community.github.io/helm-charts \
+  --type helm --name prometheus-community
+argocd repo add https://helm.elastic.co \
+  --type helm --name elastic
+argocd repo add https://fluent.github.io/helm-charts \
+  --type helm --name fluent
+argocd repo add https://open-telemetry.github.io/opentelemetry-helm-charts \
+  --type helm --name opentelemetry
+argocd repo add https://grafana.github.io/helm-charts \
+  --type helm --name grafana
+
 echo ""
 echo "ArgoCD ready at: https://$ARGOCD_HOST"
 echo "Username: admin"
