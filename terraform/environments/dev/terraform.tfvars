@@ -15,7 +15,7 @@ private_subnet_cidrs = ["10.0.16.0/21", "10.0.24.0/21"]
 cloudflare_api_token = "cfut_SjAIL838WjB0njW9rQbi89FMIHIB396UMJb7tVjY71f6f462"
 cloudflare_zone_id   = "0e75705411b03407fccf07286d74acfe"
 nlb_hostname         = "a8633a64340c3455e9b1c43df19fd6b0-d0a9831f6c50e62e.elb.eu-central-1.amazonaws.com"
-dns_records          = ["argocd", "grafana"]
+dns_records          = ["argocd", "grafana", "kibana"]
 lets_encrypt_email   = "ngusic@europecloudatlas.com"
 grafana_admin_password = "0e75705411"
 

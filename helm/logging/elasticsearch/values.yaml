@@ -1,0 +1,35 @@
+elasticsearch:
+  replicas: 1
+  minimumMasterNodes: 1
+
+  nodeSelector:
+    role: system
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 2Gi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+
+  esJavaOpts: "-Xmx1g -Xms1g"
+
+  persistence:
+    enabled: true
+    size: 30Gi
+    storageClass: gp2
+
+  # Security disabled for dev — enable in prod
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: false
+      xpack.security.transport.ssl.enabled: false
+      xpack.security.http.ssl.enabled: false
+
+  volumeClaimTemplate:
+    storageClassName: gp2
+    accessModes: ["ReadWriteOnce"]
+    resources:
+      requests:
+        storage: 30Gi

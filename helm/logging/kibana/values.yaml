@@ -1,0 +1,28 @@
+kibana:
+  nodeSelector:
+    role: system
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+  elasticsearchHosts: "http://elasticsearch-master.logging.svc.cluster.local:9200"
+
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    hosts:
+      - host: kibana.gusnikola.com
+        paths:
+          - path: /
+    tls:
+      - secretName: kibana-tls
+        hosts:
+          - kibana.gusnikola.com
