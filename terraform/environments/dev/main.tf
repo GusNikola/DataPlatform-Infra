@@ -100,6 +100,13 @@ resource "kubernetes_namespace" "logging" {
   depends_on = [module.eks]
 }
 
+resource "kubernetes_namespace" "tracing" {
+  metadata {
+    name = "tracing"
+  }
+  depends_on = [module.eks]
+}
+
 resource "kubernetes_secret" "grafana_admin" {
   metadata {
     name      = "grafana-admin"
