@@ -34,6 +34,27 @@ kube-prometheus-stack:
         - secretName: grafana-tls
           hosts:
             - grafana.gusnikola.com
+    additionalDataSources:
+      - name: Tempo
+        type: tempo
+        access: proxy
+        url: http://tempo.tracing.svc.cluster.local:3100
+        isDefault: false
+        jsonData:
+          httpMethod: GET
+          serviceMap:
+            datasourceUid: prometheus
+      - name: Elasticsearch
+        type: elasticsearch
+        access: proxy
+        url: http://elasticsearch-master.logging.svc.cluster.local:9200
+        isDefault: false
+        jsonData:
+          index: fluentbit-*
+          timeField: "@timestamp"
+          esVersion: "7.10.0"
+          logMessageField: log
+          logLevelField: level
 
   alertmanager:
     alertmanagerSpec:
@@ -57,29 +78,6 @@ kube-prometheus-stack:
           email_configs:
             - to: ngusic@europecloudatlas.com
               send_resolved: true
-
-  grafana:
-    additionalDataSources:
-      - name: Tempo
-        type: tempo
-        access: proxy
-        url: http://tempo.tracing.svc.cluster.local:3100
-        isDefault: false
-        jsonData:
-          httpMethod: GET
-          serviceMap:
-            datasourceUid: prometheus
-      - name: Elasticsearch
-        type: elasticsearch
-        access: proxy
-        url: http://elasticsearch-master.logging.svc.cluster.local:9200
-        isDefault: false
-        jsonData:
-          index: fluentbit-*
-          timeField: "@timestamp"
-          esVersion: "7.10.0"
-          logMessageField: log
-          logLevelField: level
 
   kube-state-metrics:
     nodeSelector:
