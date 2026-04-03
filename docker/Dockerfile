@@ -1,4 +1,4 @@
-FROM apache/spark-py:3.5.3
+FROM apache/spark-py:latest
 
 USER root
 
