@@ -24,7 +24,7 @@ airflow:
   postgresql:
     enabled: true
     image:
-      tag: "16"
+      tag: latest
     primary:
       nodeSelector:
         role: system
