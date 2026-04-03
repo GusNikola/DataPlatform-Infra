@@ -35,7 +35,7 @@ argocd repo add https://grafana.github.io/helm-charts \
   --type helm --name grafana
 argocd repo add https://airflow.apache.org \
   --type helm --name apache-airflow
-argocd repo add oci://ghcr.io/kubeflow/spark-operator/helm \
+argocd repo add ghcr.io \
   --type helm --name spark-operator --enable-oci
 
 echo ""
