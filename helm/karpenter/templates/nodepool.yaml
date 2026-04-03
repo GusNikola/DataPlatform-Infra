@@ -34,7 +34,7 @@ spec:
     memory: {{ mul .Values.nodePool.maxNodes 64 }}Gi
   disruption:
     consolidationPolicy: WhenEmptyOrUnderutilized
-    consolidateAfter: {{ .Values.nodePool.ttlSecondsAfterEmpty }}s
+    consolidateAfter: {{ .Values.nodePool.consolidateAfter }}
     budgets:
       - nodes: 10%
-  expireAfter: {{ .Values.nodePool.ttlSecondsUntilExpired }}s
+  expireAfter: {{ .Values.nodePool.expireAfter }}
