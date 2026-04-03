@@ -35,4 +35,6 @@ spec:
   disruption:
     consolidationPolicy: WhenEmptyOrUnderutilized
     consolidateAfter: {{ .Values.nodePool.ttlSecondsAfterEmpty }}s
+    budgets:
+      - nodes: 10%
   expireAfter: {{ .Values.nodePool.ttlSecondsUntilExpired }}s
