@@ -23,6 +23,8 @@ airflow:
 
   postgresql:
     enabled: true
+    image:
+      tag: "16"
     primary:
       nodeSelector:
         role: system
@@ -69,6 +71,8 @@ airflow:
       limits:
         cpu: 500m
         memory: 512Mi
+    persistence:
+      storageClassName: gp2
 
   dags:
     gitSync:
