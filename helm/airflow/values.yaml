@@ -89,7 +89,7 @@ airflow:
       namespace: airflow
       delete_worker_pods: "True"
 
-  extraEnv:
+  extraEnv: |
     - name: AIRFLOW__LOGGING__REMOTE_LOGGING
       value: "True"
     - name: AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER
