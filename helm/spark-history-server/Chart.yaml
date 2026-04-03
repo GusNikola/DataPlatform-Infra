@@ -1,5 +1,0 @@
-apiVersion: v2
-name: spark-history-server
-description: Spark History Server reading completed job event logs from S3
-type: application
-version: 0.1.0
