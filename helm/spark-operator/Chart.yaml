@@ -1,5 +1,9 @@
 apiVersion: v2
 name: spark-operator
-description: Kubeflow Spark Operator values overlay for DataPlatform
+description: Kubeflow Spark Operator for DataPlatform
 type: application
 version: 0.1.0
+dependencies:
+  - name: spark-operator
+    version: "2.1.0"
+    repository: "oci://ghcr.io/kubeflow/spark-operator/helm"
