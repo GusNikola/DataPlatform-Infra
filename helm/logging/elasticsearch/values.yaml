@@ -3,10 +3,6 @@ elasticsearch:
   minimumMasterNodes: 1
   clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
 
-  esConfig:
-    elasticsearch.yml: |
-      index.number_of_replicas: 0
-
   nodeSelector:
     role: system
 
