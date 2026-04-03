@@ -1,0 +1,100 @@
+airflow:
+  executor: KubernetesExecutor
+
+  nodeSelector:
+    role: system
+
+  serviceAccount:
+    create: false
+    name: airflow
+
+  ingress:
+    web:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      hosts:
+        - name: airflow.gusnikola.com
+          tls:
+            enabled: true
+            secretName: airflow-tls
+
+  postgresql:
+    enabled: true
+    primary:
+      nodeSelector:
+        role: system
+      persistence:
+        size: 5Gi
+        storageClass: gp2
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+
+  scheduler:
+    nodeSelector:
+      role: system
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+
+  webserver:
+    nodeSelector:
+      role: system
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+
+  triggerer:
+    nodeSelector:
+      role: system
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+  dags:
+    gitSync:
+      enabled: true
+      repo: https://github.com/GusNikola/DataPlatform-Infra.git
+      branch: main
+      subPath: dags
+      period: 60s
+
+  logs:
+    persistence:
+      enabled: false
+
+  config:
+    core:
+      load_examples: "False"
+    kubernetes_executor:
+      namespace: airflow
+      delete_worker_pods: "True"
+
+  extraEnv:
+    - name: AIRFLOW__LOGGING__REMOTE_LOGGING
+      value: "True"
+    - name: AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER
+      value: "s3://dataplatform-dev-data/airflow-logs"
+    - name: AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID
+      value: "aws_default"
+    - name: AWS_DEFAULT_REGION
+      value: eu-central-1

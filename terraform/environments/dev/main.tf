@@ -54,6 +54,27 @@ module "karpenter" {
   depends_on = [module.eks]
 }
 
+module "s3" {
+  source = "../../modules/s3"
+
+  bucket_name        = "${local.name_prefix}-data"
+  versioning_enabled = false
+  ia_transition_days = 30
+  tags               = local.common_tags
+}
+
+module "iam" {
+  source = "../../modules/iam"
+
+  cluster_name      = local.name_prefix
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_provider_url = module.eks.oidc_provider_url
+  data_bucket_arn   = module.s3.bucket_arn
+  tags              = local.common_tags
+
+  depends_on = [module.eks, module.s3]
+}
+
 module "ingress" {
   source = "../../modules/ingress"
 
@@ -118,6 +139,40 @@ resource "kubernetes_namespace" "tracing" {
     name = "tracing"
   }
   depends_on = [module.eks]
+}
+
+resource "kubernetes_namespace" "spark" {
+  metadata {
+    name = "spark"
+  }
+  depends_on = [module.eks]
+}
+
+resource "kubernetes_namespace" "airflow" {
+  metadata {
+    name = "airflow"
+  }
+  depends_on = [module.eks]
+}
+
+resource "kubernetes_service_account" "spark" {
+  metadata {
+    name      = "spark"
+    namespace = kubernetes_namespace.spark.metadata[0].name
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam.spark_role_arn
+    }
+  }
+}
+
+resource "kubernetes_service_account" "airflow" {
+  metadata {
+    name      = "airflow"
+    namespace = kubernetes_namespace.airflow.metadata[0].name
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam.airflow_role_arn
+    }
+  }
 }
 
 resource "kubernetes_secret" "grafana_admin" {

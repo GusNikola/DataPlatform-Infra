@@ -1,0 +1,22 @@
+nodeSelector:
+  role: system
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+webhook:
+  enable: true
+  nodeSelector:
+    role: system
+
+controller:
+  workers: 4
+
+spark:
+  jobNamespaces:
+    - spark

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: spark-operator
+description: Kubeflow Spark Operator values overlay for DataPlatform
+type: application
+version: 0.1.0

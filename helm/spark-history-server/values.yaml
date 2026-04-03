@@ -1,0 +1,30 @@
+image:
+  repository: apache/spark
+  tag: "3.5.3"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+serviceAccount:
+  name: spark
+
+s3:
+  logDirectory: "s3a://dataplatform-dev-data/eventlogs/"
+  awsRegion: eu-central-1
+
+nodeSelector:
+  role: system
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+ingress:
+  host: spark-history.gusnikola.com
+  ingressClassName: nginx
+  tls:
+    secretName: spark-history-tls
