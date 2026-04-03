@@ -57,7 +57,7 @@ module "karpenter" {
 module "s3" {
   source = "../../modules/s3"
 
-  bucket_name        = "${local.name_prefix}-data"
+  bucket_name        = "${local.name_prefix}-data-866376946262"
   versioning_enabled = false
   ia_transition_days = 30
   tags               = local.common_tags

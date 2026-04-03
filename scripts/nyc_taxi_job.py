@@ -3,7 +3,7 @@ from pyspark.sql import functions as F
 
 spark = SparkSession.builder.appName("NycTaxiAggregation").getOrCreate()
 
-df = spark.read.parquet("s3a://dataplatform-dev-data/raw/nyc-taxi/")
+df = spark.read.parquet("s3a://dataplatform-dev-data-866376946262/raw/nyc-taxi/")
 
 result = (
     df.withColumn("pickup_hour", F.hour("tpep_pickup_datetime"))
@@ -18,7 +18,7 @@ result = (
 )
 
 result.write.mode("overwrite").parquet(
-    "s3a://dataplatform-dev-data/processed/nyc-taxi-hourly/"
+    "s3a://dataplatform-dev-data-866376946262/processed/nyc-taxi-hourly/"
 )
 
 spark.stop()

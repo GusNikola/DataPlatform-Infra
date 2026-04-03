@@ -9,7 +9,7 @@ spec:
   mode: cluster
   image: "866376946262.dkr.ecr.eu-central-1.amazonaws.com/dataplatform-dev/spark:3.5-py"
   imagePullPolicy: Always
-  mainApplicationFile: "s3a://dataplatform-dev-data/scripts/nyc_taxi_job.py"
+  mainApplicationFile: "s3a://dataplatform-dev-data-866376946262/scripts/nyc_taxi_job.py"
   sparkVersion: "3.5.3"
 
   sparkConf:
@@ -18,7 +18,7 @@ spec:
     "spark.hadoop.fs.s3a.region": "eu-central-1"
     "spark.hadoop.fs.s3a.endpoint": "s3.eu-central-1.amazonaws.com"
     "spark.eventLog.enabled": "true"
-    "spark.eventLog.dir": "s3a://dataplatform-dev-data/eventlogs/"
+    "spark.eventLog.dir": "s3a://dataplatform-dev-data-866376946262/eventlogs/"
 
   driver:
     cores: 1
