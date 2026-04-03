@@ -41,6 +41,19 @@ module "eks" {
   tags                    = local.common_tags
 }
 
+module "karpenter" {
+  source = "../../modules/karpenter"
+
+  cluster_name      = local.name_prefix
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_provider_url = module.eks.oidc_provider_url
+  node_role_arn     = module.eks.node_role_arn
+  node_role_name    = module.eks.node_role_name
+  tags              = local.common_tags
+
+  depends_on = [module.eks]
+}
+
 module "ingress" {
   source = "../../modules/ingress"
 

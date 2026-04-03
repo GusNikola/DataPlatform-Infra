@@ -1,0 +1,14 @@
+clusterName: dataplatform-dev
+nodeRoleName: dataplatform-dev-node-role
+
+nodePool:
+  instanceTypes:
+    - m5.4xlarge
+    - r5.4xlarge
+    - m5.2xlarge
+    - r5.2xlarge
+  capacityTypes:
+    - spot
+  maxNodes: 20
+  ttlSecondsAfterEmpty: 30
+  ttlSecondsUntilExpired: 2592000  # 30 days

@@ -27,7 +27,7 @@ node_groups = {
   system = {
     instance_types = ["m5.large"]
     capacity_type  = "ON_DEMAND"
-    desired        = 1
+    desired        = 2
     min            = 1
     max            = 3
     labels         = { role = "system" }

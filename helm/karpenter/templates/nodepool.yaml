@@ -1,0 +1,38 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: spark-executor
+spec:
+  template:
+    metadata:
+      labels:
+        role: spark-executor
+    spec:
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: spark-executor
+      taints:
+        - key: role
+          value: spark-executor
+          effect: NoSchedule
+      requirements:
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: {{ toJson .Values.nodePool.capacityTypes }}
+        - key: node.kubernetes.io/instance-type
+          operator: In
+          values: {{ toJson .Values.nodePool.instanceTypes }}
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+  limits:
+    cpu: {{ mul .Values.nodePool.maxNodes 16 }}
+    memory: {{ mul .Values.nodePool.maxNodes 64 }}Gi
+  disruption:
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: {{ .Values.nodePool.ttlSecondsAfterEmpty }}s
+  expireAfter: {{ .Values.nodePool.ttlSecondsUntilExpired }}s
