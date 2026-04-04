@@ -29,6 +29,9 @@ spec:
         - key: kubernetes.io/os
           operator: In
           values: ["linux"]
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values: {{ toJson .Values.nodePool.availabilityZones }}
   limits:
     cpu: {{ mul .Values.nodePool.maxNodes 16 }}
     memory: {{ mul .Values.nodePool.maxNodes 64 }}Gi

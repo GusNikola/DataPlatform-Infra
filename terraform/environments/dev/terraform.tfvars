@@ -33,13 +33,4 @@ node_groups = {
     labels         = { role = "system" }
     taints         = []
   }
-  spark-executor = {
-    instance_types = ["m5.4xlarge", "r5.4xlarge"]
-    capacity_type  = "SPOT"
-    desired        = 0
-    min            = 0
-    max            = 5
-    labels         = { role = "spark-executor" }
-    taints         = [{ key = "role", value = "spark-executor", effect = "NO_SCHEDULE" }]
-  }
 }
