@@ -20,6 +20,9 @@ subjects:
   - kind: ServiceAccount
     name: airflow
     namespace: airflow
+  - kind: ServiceAccount
+    name: airflow-worker
+    namespace: airflow
 roleRef:
   kind: Role
   name: airflow-spark-submit
