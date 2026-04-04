@@ -42,6 +42,9 @@ airflow:
   scheduler:
     nodeSelector:
       role: system
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: "arn:aws:iam::866376946262:role/dataplatform-dev-airflow-irsa"
     resources:
       requests:
         cpu: 200m
@@ -64,6 +67,9 @@ airflow:
   triggerer:
     nodeSelector:
       role: system
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: "arn:aws:iam::866376946262:role/dataplatform-dev-airflow-irsa"
     resources:
       requests:
         cpu: 100m
