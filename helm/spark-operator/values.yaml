@@ -1,10 +1,11 @@
-controller:
-  nodeSelector:
-    role: system
-webhook:
-  enable: true
-  nodeSelector:
-    role: system
-spark:
-  jobNamespaces:
-    - spark
+spark-operator:
+  controller:
+    nodeSelector:
+      role: system
+  webhook:
+    enable: true
+    nodeSelector:
+      role: system
+  spark:
+    jobNamespaces:
+      - spark
