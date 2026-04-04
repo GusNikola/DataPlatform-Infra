@@ -90,7 +90,9 @@ airflow:
 
   logs:
     persistence:
-      enabled: false
+      enabled: true
+      size: 5Gi
+      storageClassName: gp2
 
   config:
     core:
