@@ -13,7 +13,7 @@ with DAG(
 
     submit = SparkKubernetesOperator(
         task_id="submit_nyc_taxi_aggregation",
-        application_file="spark_nyc_taxi_application.yaml",
+        application_file="/opt/airflow/dags/repo/dags/spark_nyc_taxi_application.yaml",
         namespace="spark",
         kubernetes_conn_id="kubernetes_default",
         do_xcom_push=True,
