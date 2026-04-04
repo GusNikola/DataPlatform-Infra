@@ -11,4 +11,3 @@ nodePool:
     - spot
   maxNodes: 20
   consolidateAfter: 30s
-  expireAfter: 720h

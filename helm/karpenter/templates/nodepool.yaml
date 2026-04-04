@@ -37,4 +37,3 @@ spec:
     consolidateAfter: {{ .Values.nodePool.consolidateAfter }}
     budgets:
       - nodes: 10%
-    expireAfter: {{ .Values.nodePool.expireAfter }}
