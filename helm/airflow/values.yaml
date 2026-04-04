@@ -90,16 +90,15 @@ airflow:
 
   logs:
     persistence:
-      enabled: true
-      size: 5Gi
-      storageClassName: gp2
+      enabled: false
 
   config:
     core:
       load_examples: "False"
     kubernetes_executor:
       namespace: airflow
-      delete_worker_pods: "True"
+      delete_worker_pods: "False"
+      delete_worker_pods_on_failure: "False"
 
   extraEnv: |
     - name: AWS_DEFAULT_REGION
