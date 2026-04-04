@@ -69,8 +69,10 @@ resource "aws_iam_role" "airflow" {
         Federated = var.oidc_provider_arn
       }
       Condition = {
+        StringLike = {
+          "${var.oidc_provider_url}:sub" = "system:serviceaccount:airflow:airflow*"
+        }
         StringEquals = {
-          "${var.oidc_provider_url}:sub" = "system:serviceaccount:airflow:airflow"
           "${var.oidc_provider_url}:aud" = "sts.amazonaws.com"
         }
       }
