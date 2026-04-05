@@ -123,7 +123,7 @@ data:
           },
           "targets": [{
             "expr": "1 - rate(node_cpu_seconds_total{mode=\"idle\"}[5m])",
-            "legendFormat": "{{ node }}",
+            "legendFormat": "{{"{{"}} node }}",
             "refId": "A"
           }]
         },
@@ -137,7 +137,7 @@ data:
           },
           "targets": [{
             "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
-            "legendFormat": "{{ instance }}",
+            "legendFormat": "{{"{{"}} instance }}",
             "refId": "A"
           }]
         },
@@ -234,7 +234,7 @@ data:
           },
           "targets": [{
             "expr": "increase(kube_pod_container_status_restarts_total{namespace=\"airflow\"}[1h])",
-            "legendFormat": "{{ pod }} / {{ container }}",
+            "legendFormat": "{{"{{"}} pod }} / {{"{{"}} container }}",
             "refId": "A"
           }]
         },
@@ -253,7 +253,7 @@ data:
           },
           "targets": [{
             "expr": "sum by (name) (rate(fluentbit_output_proc_records_total[5m]))",
-            "legendFormat": "{{ name }}",
+            "legendFormat": "{{"{{"}} name }}",
             "refId": "A"
           }]
         },
@@ -266,8 +266,8 @@ data:
             "defaults": { "unit": "reqps", "min": 0, "custom": { "lineWidth": 2, "fillOpacity": 15 } }
           },
           "targets": [
-            { "expr": "sum by (name) (rate(fluentbit_output_dropped_records_total[5m]))", "legendFormat": "dropped: {{ name }}", "refId": "A" },
-            { "expr": "sum by (name) (rate(fluentbit_output_retried_records_total[5m]))", "legendFormat": "retried: {{ name }}", "refId": "B" }
+            { "expr": "sum by (name) (rate(fluentbit_output_dropped_records_total[5m]))", "legendFormat": "dropped: {{"{{"}} name }}", "refId": "A" },
+            { "expr": "sum by (name) (rate(fluentbit_output_retried_records_total[5m]))", "legendFormat": "retried: {{"{{"}} name }}", "refId": "B" }
           ]
         }
       ]
