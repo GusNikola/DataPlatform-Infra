@@ -2,10 +2,26 @@ spark-operator:
   controller:
     nodeSelector:
       role: system
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+
   webhook:
     enable: true
     nodeSelector:
       role: system
+    replicas: 2
+    failurePolicy: Ignore
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
+
   spark:
     jobNamespaces:
       - spark
