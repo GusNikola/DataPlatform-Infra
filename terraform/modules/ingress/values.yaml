@@ -9,6 +9,16 @@ controller:
       effect: NoSchedule
       operator: Equal
 
+admissionWebhooks:
+  patch:
+    nodeSelector:
+      role: core
+    tolerations:
+      - key: role
+        value: core
+        effect: NoSchedule
+        operator: Equal
+
   service:
     type: LoadBalancer
     annotations:
