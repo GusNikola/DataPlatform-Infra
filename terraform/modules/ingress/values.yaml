@@ -1,6 +1,14 @@
 controller:
   replicaCount: 2
 
+  nodeSelector:
+    role: platform
+  tolerations:
+    - key: role
+      value: platform
+      effect: NoSchedule
+      operator: Equal
+
   service:
     type: LoadBalancer
     annotations:

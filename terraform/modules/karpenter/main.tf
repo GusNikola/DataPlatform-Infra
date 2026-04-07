@@ -361,7 +361,11 @@ resource "helm_release" "karpenter" {
     { name = "controller.resources.requests.memory", value = "256Mi" },
     { name = "controller.resources.limits.cpu", value = "1" },
     { name = "controller.resources.limits.memory", value = "512Mi" },
-    { name = "nodeSelector.role", value = "system" },
+    { name = "nodeSelector.role", value = "core" },
+    { name = "tolerations[0].key", value = "role" },
+    { name = "tolerations[0].value", value = "core" },
+    { name = "tolerations[0].effect", value = "NoSchedule" },
+    { name = "tolerations[0].operator", value = "Equal" },
   ]
 
   depends_on = [
