@@ -99,6 +99,15 @@ kube-prometheus-stack:
             - to: ngusic@europecloudatlas.com
               send_resolved: true
 
+  prometheusOperator:
+    nodeSelector:
+      role: platform
+    tolerations:
+      - key: role
+        value: platform
+        effect: NoSchedule
+        operator: Equal
+
   kube-state-metrics:
     nodeSelector:
       role: platform

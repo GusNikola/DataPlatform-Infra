@@ -27,11 +27,21 @@ resource "helm_release" "cert_manager" {
 
   set = [
     { name = "crds.enabled", value = "true" },
-    { name = "global.nodeSelector.role", value = "core" },
+    { name = "nodeSelector.role", value = "core" },
     { name = "tolerations[0].key", value = "role" },
     { name = "tolerations[0].value", value = "core" },
     { name = "tolerations[0].effect", value = "NoSchedule" },
     { name = "tolerations[0].operator", value = "Equal" },
+    { name = "cainjector.nodeSelector.role", value = "core" },
+    { name = "cainjector.tolerations[0].key", value = "role" },
+    { name = "cainjector.tolerations[0].value", value = "core" },
+    { name = "cainjector.tolerations[0].effect", value = "NoSchedule" },
+    { name = "cainjector.tolerations[0].operator", value = "Equal" },
+    { name = "webhook.nodeSelector.role", value = "core" },
+    { name = "webhook.tolerations[0].key", value = "role" },
+    { name = "webhook.tolerations[0].value", value = "core" },
+    { name = "webhook.tolerations[0].effect", value = "NoSchedule" },
+    { name = "webhook.tolerations[0].operator", value = "Equal" },
   ]
 
   depends_on = [helm_release.ingress_nginx]
