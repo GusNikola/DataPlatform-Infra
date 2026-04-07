@@ -1,0 +1,170 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: karpenter
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
+    targetRevision: HEAD
+    path: helm/karpenter
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: karpenter
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
+    targetRevision: HEAD
+    path: helm/monitoring
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elasticsearch
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
+    targetRevision: HEAD
+    path: helm/logging/elasticsearch
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kibana
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
+    targetRevision: HEAD
+    path: helm/logging/kibana
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fluentbit
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
+    targetRevision: HEAD
+    path: helm/logging/fluentbit
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tempo
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
+    targetRevision: HEAD
+    path: helm/tempo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tracing
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opentelemetry
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
+    targetRevision: HEAD
+    path: helm/opentelemetry
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tracing
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: spark-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
+    targetRevision: HEAD
+    path: helm/spark-operator
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: spark-operator
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: airflow
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
+    targetRevision: HEAD
+    path: helm/airflow
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: airflow
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
