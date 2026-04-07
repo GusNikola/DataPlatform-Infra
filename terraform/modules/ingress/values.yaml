@@ -2,10 +2,10 @@ controller:
   replicaCount: 2
 
   nodeSelector:
-    role: platform
+    role: core
   tolerations:
     - key: role
-      value: platform
+      value: core
       effect: NoSchedule
       operator: Equal
 

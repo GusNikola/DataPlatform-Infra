@@ -27,9 +27,9 @@ resource "helm_release" "cert_manager" {
 
   set = [
     { name = "crds.enabled", value = "true" },
-    { name = "global.nodeSelector.role", value = "platform" },
+    { name = "global.nodeSelector.role", value = "core" },
     { name = "tolerations[0].key", value = "role" },
-    { name = "tolerations[0].value", value = "platform" },
+    { name = "tolerations[0].value", value = "core" },
     { name = "tolerations[0].effect", value = "NoSchedule" },
     { name = "tolerations[0].operator", value = "Equal" },
   ]
