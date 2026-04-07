@@ -11,6 +11,8 @@ controller:
 
 admissionWebhooks:
   enabled: false
+  patch:
+    enabled: false
 
   service:
     type: LoadBalancer
