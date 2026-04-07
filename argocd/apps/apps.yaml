@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/karpenter
   destination:
     server: https://kubernetes.default.svc
@@ -26,7 +26,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/monitoring
   destination:
     server: https://kubernetes.default.svc
@@ -45,7 +45,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/logging/elasticsearch
   destination:
     server: https://kubernetes.default.svc
@@ -64,7 +64,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/logging/kibana
   destination:
     server: https://kubernetes.default.svc
@@ -83,7 +83,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/logging/fluentbit
   destination:
     server: https://kubernetes.default.svc
@@ -102,7 +102,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/tempo
   destination:
     server: https://kubernetes.default.svc
@@ -121,7 +121,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/opentelemetry
   destination:
     server: https://kubernetes.default.svc
@@ -140,7 +140,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/spark-operator
   destination:
     server: https://kubernetes.default.svc
@@ -159,7 +159,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GusNikola/DataPlatform-Infra.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/airflow
   destination:
     server: https://kubernetes.default.svc
