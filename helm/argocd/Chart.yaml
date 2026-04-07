@@ -1,5 +1,9 @@
 apiVersion: v2
 name: argocd
-description: ArgoCD ingress configuration
+description: ArgoCD deployment for DataPlatform
 type: application
 version: 0.1.0
+dependencies:
+  - name: argo-cd
+    version: "9.4.17"
+    repository: https://argoproj.github.io/argo-helm

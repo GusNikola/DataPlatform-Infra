@@ -1,5 +1,19 @@
-ingress:
-  host: argocd.gusnikola.com
-  ingressClassName: nginx
-  tls:
-    secretName: argocd-tls
+argo-cd:
+  global:
+    nodeSelector:
+      role: core
+    tolerations:
+      - key: role
+        value: core
+        effect: NoSchedule
+        operator: Equal
+
+  server:
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      hostname: argocd.gusnikola.com
+      tls: true
