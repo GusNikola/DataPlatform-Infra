@@ -1,6 +1,14 @@
 fluentbit:
-  # DaemonSet runs on ALL nodes including spark-executor (tainted)
+  # DaemonSet runs on ALL nodes (core, platform, spark-executor)
   tolerations:
+    - key: role
+      operator: Equal
+      value: core
+      effect: NoSchedule
+    - key: role
+      operator: Equal
+      value: platform
+      effect: NoSchedule
     - key: role
       operator: Equal
       value: spark-executor

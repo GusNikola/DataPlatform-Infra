@@ -2,7 +2,12 @@ airflow:
   executor: KubernetesExecutor
 
   nodeSelector:
-    role: system
+    role: platform
+  tolerations:
+    - key: role
+      value: platform
+      effect: NoSchedule
+      operator: Equal
 
   serviceAccount:
     create: false
@@ -27,7 +32,12 @@ airflow:
       tag: latest
     primary:
       nodeSelector:
-        role: system
+        role: platform
+      tolerations:
+        - key: role
+          value: platform
+          effect: NoSchedule
+          operator: Equal
       persistence:
         size: 5Gi
         storageClass: gp2
@@ -41,7 +51,12 @@ airflow:
 
   scheduler:
     nodeSelector:
-      role: system
+      role: platform
+    tolerations:
+      - key: role
+        value: platform
+        effect: NoSchedule
+        operator: Equal
     serviceAccount:
       annotations:
         eks.amazonaws.com/role-arn: "arn:aws:iam::866376946262:role/dataplatform-dev-airflow-irsa"
@@ -55,7 +70,12 @@ airflow:
 
   webserver:
     nodeSelector:
-      role: system
+      role: platform
+    tolerations:
+      - key: role
+        value: platform
+        effect: NoSchedule
+        operator: Equal
     resources:
       requests:
         cpu: 200m
@@ -66,7 +86,12 @@ airflow:
 
   triggerer:
     nodeSelector:
-      role: system
+      role: platform
+    tolerations:
+      - key: role
+        value: platform
+        effect: NoSchedule
+        operator: Equal
     serviceAccount:
       annotations:
         eks.amazonaws.com/role-arn: "arn:aws:iam::866376946262:role/dataplatform-dev-airflow-irsa"

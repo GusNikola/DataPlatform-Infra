@@ -2,7 +2,12 @@ kube-prometheus-stack:
   prometheus:
     prometheusSpec:
       nodeSelector:
-        role: system
+        role: platform
+      tolerations:
+        - key: role
+          value: platform
+          effect: NoSchedule
+          operator: Equal
       retention: 7d
       storageSpec:
         volumeClaimTemplate:
@@ -17,7 +22,12 @@ kube-prometheus-stack:
     enabled: true
     fullnameOverride: grafana
     nodeSelector:
-      role: system
+      role: platform
+    tolerations:
+      - key: role
+        value: platform
+        effect: NoSchedule
+        operator: Equal
     admin:
       existingSecret: grafana-admin
       userKey: admin-user
@@ -64,7 +74,12 @@ kube-prometheus-stack:
   alertmanager:
     alertmanagerSpec:
       nodeSelector:
-        role: system
+        role: platform
+      tolerations:
+        - key: role
+          value: platform
+          effect: NoSchedule
+          operator: Equal
     config:
       global:
         smtp_smarthost: "smtp.gmail.com:587"
@@ -86,11 +101,24 @@ kube-prometheus-stack:
 
   kube-state-metrics:
     nodeSelector:
-      role: system
+      role: platform
+    tolerations:
+      - key: role
+        value: platform
+        effect: NoSchedule
+        operator: Equal
 
-  # node-exporter runs on ALL nodes including spark-executor (tainted)
+  # node-exporter runs on ALL nodes (core, platform, spark-executor)
   prometheus-node-exporter:
     tolerations:
+      - key: role
+        value: core
+        effect: NoSchedule
+        operator: Equal
+      - key: role
+        value: platform
+        effect: NoSchedule
+        operator: Equal
       - key: role
         value: spark-executor
         effect: NoSchedule

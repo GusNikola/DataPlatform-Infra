@@ -15,3 +15,21 @@ spec:
   tags:
     Name: {{ .Values.clusterName }}-karpenter-spark-executor
     karpenter.sh/discovery: {{ .Values.clusterName }}
+---
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: platform
+spec:
+  amiSelectorTerms:
+    - alias: al2023@latest
+  role: {{ .Values.nodeRoleName }}
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: {{ .Values.clusterName }}
+  securityGroupSelectorTerms:
+    - tags:
+        kubernetes.io/cluster/{{ .Values.clusterName }}: owned
+  tags:
+    Name: {{ .Values.clusterName }}-karpenter-platform
+    karpenter.sh/discovery: {{ .Values.clusterName }}

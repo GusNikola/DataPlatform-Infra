@@ -1,7 +1,7 @@
 clusterName: dataplatform-dev
 nodeRoleName: dataplatform-dev-node-role
 
-nodePool:
+sparkNodePool:
   instanceTypes:
     - m5.xlarge
     - m5.2xlarge
@@ -20,3 +20,15 @@ nodePool:
     - eu-central-1b
   maxNodes: 20
   consolidateAfter: 30s
+
+platformNodePool:
+  instanceTypes:
+    - m5.xlarge
+    - m5a.xlarge
+    - m5.large
+    - m5a.large
+  availabilityZones:
+    - eu-central-1a
+    - eu-central-1b
+  maxNodes: 3
+  consolidateAfter: 60s

@@ -4,7 +4,12 @@ elasticsearch:
   clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
 
   nodeSelector:
-    role: system
+    role: platform
+  tolerations:
+    - key: role
+      value: platform
+      effect: NoSchedule
+      operator: Equal
 
   resources:
     requests:

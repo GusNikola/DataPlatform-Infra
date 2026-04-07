@@ -24,13 +24,19 @@ eks_public_access_cidrs = ["24.135.66.25/32"]
 kubernetes_version = "1.32"
 
 node_groups = {
-  system = {
+  core = {
     instance_types = ["m5.large"]
     capacity_type  = "ON_DEMAND"
-    desired        = 2
+    desired        = 1
     min            = 1
-    max            = 3
-    labels         = { role = "system" }
-    taints         = []
+    max            = 1
+    labels         = { role = "core" }
+    taints = [
+      {
+        key    = "role"
+        value  = "core"
+        effect = "NO_SCHEDULE"
+      }
+    ]
   }
 }

@@ -1,7 +1,12 @@
 spark-operator:
   controller:
     nodeSelector:
-      role: system
+      role: platform
+    tolerations:
+      - key: role
+        value: platform
+        effect: NoSchedule
+        operator: Equal
     resources:
       requests:
         cpu: 100m
@@ -12,7 +17,12 @@ spark-operator:
   webhook:
     enable: true
     nodeSelector:
-      role: system
+      role: platform
+    tolerations:
+      - key: role
+        value: platform
+        effect: NoSchedule
+        operator: Equal
     replicas: 2
     failurePolicy: Ignore
     resources:

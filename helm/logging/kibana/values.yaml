@@ -1,6 +1,11 @@
 kibana:
   nodeSelector:
-    role: system
+    role: platform
+  tolerations:
+    - key: role
+      value: platform
+      effect: NoSchedule
+      operator: Equal
 
   resources:
     requests:

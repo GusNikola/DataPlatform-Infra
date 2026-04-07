@@ -35,7 +35,12 @@ spec:
     memory: "1g"
     serviceAccount: spark
     nodeSelector:
-      role: system
+      role: platform
+    tolerations:
+      - key: role
+        operator: Equal
+        value: platform
+        effect: NoSchedule
     labels:
       version: "3.5.3"
 
