@@ -76,6 +76,10 @@ airflow:
         value: platform
         effect: NoSchedule
         operator: Equal
+    startupProbe:
+      failureThreshold: 18
+      periodSeconds: 10
+      timeoutSeconds: 20
     resources:
       requests:
         cpu: 200m
