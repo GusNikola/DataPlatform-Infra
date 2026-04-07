@@ -10,14 +10,7 @@ controller:
       operator: Equal
 
 admissionWebhooks:
-  patch:
-    nodeSelector:
-      role: core
-    tolerations:
-      - key: role
-        value: core
-        effect: NoSchedule
-        operator: Equal
+  enabled: false
 
   service:
     type: LoadBalancer
