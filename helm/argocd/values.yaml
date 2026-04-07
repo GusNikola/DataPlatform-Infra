@@ -8,6 +8,12 @@ argo-cd:
         effect: NoSchedule
         operator: Equal
 
+  dex:
+    enabled: false
+
+  notifications:
+    enabled: false
+
   server:
     ingress:
       enabled: true

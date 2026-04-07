@@ -32,3 +32,13 @@ platformNodePool:
     - eu-central-1b
   maxNodes: 3
   consolidateAfter: 60s
+
+generalNodePool:
+  instanceTypes:
+    - m5.large
+    - m5a.large
+  availabilityZones:
+    - eu-central-1a
+    - eu-central-1b
+  maxNodes: 2
+  consolidateAfter: 300s

@@ -25,14 +25,7 @@ resource "helm_release" "cert_manager" {
   atomic           = true
   cleanup_on_fail  = true
 
-  set = [
-    { name = "crds.enabled", value = "true" },
-    { name = "global.nodeSelector.role", value = "core" },
-    { name = "tolerations[0].key", value = "role" },
-    { name = "tolerations[0].value", value = "core" },
-    { name = "tolerations[0].effect", value = "NoSchedule" },
-    { name = "tolerations[0].operator", value = "Equal" },
-  ]
+  set = [{ name = "crds.enabled", value = "true" }]
 
   depends_on = [helm_release.ingress_nginx]
 }

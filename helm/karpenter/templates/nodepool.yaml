@@ -83,3 +83,42 @@ spec:
     consolidateAfter: {{ .Values.platformNodePool.consolidateAfter }}
     budgets:
       - nodes: 100%
+---
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: general
+spec:
+  template:
+    metadata:
+      labels:
+        role: general
+    spec:
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: general
+      requirements:
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["on-demand"]
+        - key: node.kubernetes.io/instance-type
+          operator: In
+          values: {{ toJson .Values.generalNodePool.instanceTypes }}
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values: {{ toJson .Values.generalNodePool.availabilityZones }}
+  limits:
+    cpu: {{ mul .Values.generalNodePool.maxNodes 2 }}
+    memory: {{ mul .Values.generalNodePool.maxNodes 8 }}Gi
+  disruption:
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: {{ .Values.generalNodePool.consolidateAfter }}
+    budgets:
+      - nodes: 100%
