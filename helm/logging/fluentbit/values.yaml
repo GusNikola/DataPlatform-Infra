@@ -59,6 +59,12 @@ fluentbit:
           K8S-Logging.Parser  On
           K8S-Logging.Exclude Off
 
+      [FILTER]
+          Name   lua
+          Match  kube.*
+          script /fluent-bit/scripts/extract_level.lua
+          call   extract_log_level
+
     outputs: |
       [OUTPUT]
           Name                  es
@@ -72,6 +78,50 @@ fluentbit:
           tls                   Off
           tls.verify            Off
           Suppress_Type_Name    On
+
+  luaScripts:
+    extract_level.lua: |
+      function extract_log_level(tag, timestamp, record)
+        -- already has a level field (e.g. from JSON merge)
+        if record["level"] ~= nil and record["level"] ~= "" then
+          local l = string.upper(tostring(record["level"]))
+          if l == "WARNING"  then l = "WARN"  end
+          if l == "FATAL"    then l = "ERROR" end
+          if l == "CRITICAL" then l = "ERROR" end
+          record["level"] = l
+          return 1, timestamp, record
+        end
+
+        local log = record["log"] or ""
+
+        -- Spark / Java:  "26/04/08 04:35:05 INFO ClassName: msg"
+        local level = string.match(log, "^%d+/%d+/%d+%s+%d+:%d+:%d+%s+(%u+)%s")
+
+        -- Airflow / Python:  "[2026-04-08 ...] {file.py:123} INFO - msg"
+        if not level then
+          level = string.match(log, "%{[^}]+:[^}]+%}%s+(%u+)%s*[-:]")
+        end
+
+        -- Generic word-boundary scan (longest match first to avoid INFO inside WARNING)
+        if not level then
+          for _, l in ipairs({"CRITICAL","FATAL","ERROR","WARNING","WARN","INFO","DEBUG","TRACE"}) do
+            if string.find(log, "%f[%a]" .. l .. "%f[%A]") then
+              level = l
+              break
+            end
+          end
+        end
+
+        if level then
+          if level == "WARNING"  then level = "WARN"  end
+          if level == "FATAL"    then level = "ERROR" end
+          if level == "CRITICAL" then level = "ERROR" end
+          record["level"] = level
+          return 1, timestamp, record
+        end
+
+        return 0, timestamp, record
+      end
 
   extraVolumes:
     - name: buffer
