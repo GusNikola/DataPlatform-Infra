@@ -31,6 +31,7 @@ data:
               {"value": "1h", "text": "1h"}
             ],
             "current": {"value": "5m", "text": "5m"},
+            "query": "1m,5m,15m,30m,1h",
             "auto": false
           }
         ]
@@ -73,7 +74,7 @@ data:
           "title": "Log Ingestion Rate (records/s)",
           "gridPos": {"x": 18, "y": 0, "w": 6, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "sum(rate(fluentbit_input_records_total[$interval])) or vector(0)", "legendFormat": "records/s"}],
+          "targets": [{"expr": "sum(rate(fluentbit_input_records_total[$__rate_interval])) or vector(0)", "legendFormat": "records/s"}],
           "options": {"colorMode": "value", "graphMode": "area"},
           "fieldConfig": {"defaults": {"unit": "short", "color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "blue", "value": null}]}}}
         },
@@ -84,8 +85,8 @@ data:
           "gridPos": {"x": 0, "y": 4, "w": 12, "h": 8},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
-            {"expr": "histogram_quantile(0.50, sum by (le) (rate(airflow_task_duration_bucket[$interval]))) or vector(0)", "legendFormat": "p50"},
-            {"expr": "histogram_quantile(0.95, sum by (le) (rate(airflow_task_duration_bucket[$interval]))) or vector(0)", "legendFormat": "p95"}
+            {"expr": "histogram_quantile(0.50, sum by (le) (rate(airflow_task_duration_bucket[$__rate_interval]))) or vector(0)", "legendFormat": "p50"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(airflow_task_duration_bucket[$__rate_interval]))) or vector(0)", "legendFormat": "p95"}
           ],
           "fieldConfig": {"defaults": {"unit": "s", "custom": {"fillOpacity": 5, "lineWidth": 2}}}
         },
@@ -96,7 +97,7 @@ data:
           "gridPos": {"x": 12, "y": 4, "w": 12, "h": 8},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
-            {"expr": "rate(fluentbit_input_records_total[$interval]) or vector(0)", "legendFormat": "{{ "{{" }}node_name{{ "}}" }}"}
+            {"expr": "rate(fluentbit_input_records_total[$__rate_interval]) or vector(0)", "legendFormat": "{{ "{{" }}node_name{{ "}}" }}"}
           ],
           "fieldConfig": {"defaults": {"unit": "short", "custom": {"fillOpacity": 5, "lineWidth": 2}}}
         },
@@ -107,8 +108,8 @@ data:
           "gridPos": {"x": 0, "y": 12, "w": 12, "h": 8},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
-            {"expr": "sum(rate(fluentbit_output_dropped_records_total[$interval])) or vector(0)", "legendFormat": "Dropped"},
-            {"expr": "sum(rate(fluentbit_output_retried_records_total[$interval])) or vector(0)", "legendFormat": "Retried"}
+            {"expr": "sum(rate(fluentbit_output_dropped_records_total[$__rate_interval])) or vector(0)", "legendFormat": "Dropped"},
+            {"expr": "sum(rate(fluentbit_output_retried_records_total[$__rate_interval])) or vector(0)", "legendFormat": "Retried"}
           ],
           "fieldConfig": {"defaults": {"unit": "short", "custom": {"fillOpacity": 10, "lineWidth": 2}, "color": {"mode": "palette-classic"}, "thresholds": {"steps": [{"color": "red", "value": 1}]}}}
         },

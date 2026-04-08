@@ -31,6 +31,7 @@ data:
               {"value": "1h", "text": "1h"}
             ],
             "current": {"value": "5m", "text": "5m"},
+            "query": "1m,5m,15m,30m,1h",
             "auto": false
           },
           {
@@ -90,7 +91,7 @@ data:
           "title": "Cluster CPU Utilization %",
           "gridPos": {"x": 16, "y": 0, "w": 4, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "sum(rate(node_cpu_seconds_total{mode!=\"idle\"}[$interval])) / sum(machine_cpu_cores) * 100", "legendFormat": "CPU %"}],
+          "targets": [{"expr": "sum(rate(node_cpu_seconds_total{mode!=\"idle\"}[$__rate_interval])) / sum(machine_cpu_cores) * 100", "legendFormat": "CPU %"}],
           "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 70}, {"color": "red", "value": 90}]}}}
         },
         {
