@@ -41,6 +41,12 @@ kube-prometheus-stack:
         value: platform
         effect: NoSchedule
         operator: Equal
+    persistence:
+      enabled: true
+      storageClassName: gp2
+      size: 2Gi
+      accessModes:
+        - ReadWriteOnce
     resources:
       requests:
         cpu: 100m
