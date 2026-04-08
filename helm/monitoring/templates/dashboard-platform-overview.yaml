@@ -108,7 +108,7 @@ data:
           "description": "Shows Karpenter autoscaling — nodes provisioned and terminated per role",
           "gridPos": {"x": 0, "y": 4, "w": 14, "h": 9},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "count by (label_role) (kube_node_labels)", "legendFormat": "{{label_role}}"}],
+          "targets": [{"expr": "count by (label_role) (kube_node_labels)", "legendFormat": "{{ "{{" }}label_role{{ "}}" }}"}],
           "options": {"tooltip": {"mode": "multi"}, "legend": {"displayMode": "table", "placement": "right"}},
           "fieldConfig": {"defaults": {"custom": {"fillOpacity": 10, "lineWidth": 2, "spanNulls": false}}},
           "timeRange": {"from": "now-7d", "to": "now"}
@@ -119,7 +119,7 @@ data:
           "title": "Running Pods by Namespace",
           "gridPos": {"x": 14, "y": 4, "w": 10, "h": 9},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "count by (namespace) (kube_pod_status_phase{phase=\"Running\", namespace=~\"$namespace\"})", "legendFormat": "{{namespace}}"}],
+          "targets": [{"expr": "count by (namespace) (kube_pod_status_phase{phase=\"Running\", namespace=~\"$namespace\"})", "legendFormat": "{{ "{{" }}namespace{{ "}}" }}"}],
           "options": {"orientation": "horizontal", "displayMode": "gradient", "valueMode": "color"},
           "fieldConfig": {"defaults": {"thresholds": {"steps": [{"color": "green", "value": null}]}}}
         }

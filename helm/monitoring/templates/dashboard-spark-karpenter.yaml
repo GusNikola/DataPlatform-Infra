@@ -83,7 +83,7 @@ data:
           "gridPos": {"x": 0, "y": 4, "w": 24, "h": 9},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
-            {"expr": "count by (label_role) (kube_node_labels)", "legendFormat": "{{label_role}}"}
+            {"expr": "count by (label_role) (kube_node_labels)", "legendFormat": "{{ "{{" }}label_role{{ "}}" }}"}
           ],
           "options": {
             "tooltip": {"mode": "multi"},
@@ -116,7 +116,7 @@ data:
           "gridPos": {"x": 12, "y": 13, "w": 12, "h": 8},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
-            {"expr": "karpenter_nodes_total or vector(0)", "legendFormat": "{{nodepool}}"}
+            {"expr": "karpenter_nodes_total or vector(0)", "legendFormat": "{{ "{{" }}nodepool{{ "}}" }}"}
           ],
           "options": {"tooltip": {"mode": "multi"}, "legend": {"displayMode": "list", "placement": "bottom"}},
           "fieldConfig": {"defaults": {"custom": {"fillOpacity": 10, "lineWidth": 2}}}
