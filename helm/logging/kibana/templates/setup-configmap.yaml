@@ -13,7 +13,7 @@ data:
     KIBANA="http://kibana-kibana.logging.svc.cluster.local:5601"
 
     echo "Waiting for Kibana..."
-    until curl -sf "$KIBANA/api/status" 2>/dev/null | grep -q '"level":"available"'; do
+    until curl -sf "$KIBANA/api/status" 2>/dev/null | grep -qE '"level":"available"|"state":"green"'; do
       sleep 5
     done
     echo "Kibana ready."
