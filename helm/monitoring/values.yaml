@@ -8,6 +8,8 @@ kube-prometheus-stack:
           value: platform
           effect: NoSchedule
           operator: Equal
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
       retention: 7d
       storageSpec:
         volumeClaimTemplate:
@@ -21,6 +23,10 @@ kube-prometheus-stack:
   grafana:
     enabled: true
     fullnameOverride: grafana
+    defaultDashboardsEnabled: false
+    sidecar:
+      dashboards:
+        defaultFolderName: DataPlatform
     nodeSelector:
       role: platform
     tolerations:

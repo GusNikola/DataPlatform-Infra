@@ -1,0 +1,127 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-platform-overview
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  platform-overview.json: |
+    {
+      "title": "Platform Overview",
+      "uid": "platform-overview",
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "30s",
+      "graphTooltip": 1,
+      "tags": ["dataplatform"],
+      "time": { "from": "now-24h", "to": "now" },
+      "templating": {
+        "list": [
+          {
+            "name": "interval",
+            "type": "interval",
+            "label": "Interval",
+            "options": [
+              {"value": "1m", "text": "1m"},
+              {"value": "5m", "text": "5m"},
+              {"value": "15m", "text": "15m"},
+              {"value": "30m", "text": "30m"},
+              {"value": "1h", "text": "1h"}
+            ],
+            "current": {"value": "5m", "text": "5m"},
+            "auto": false
+          },
+          {
+            "name": "namespace",
+            "type": "query",
+            "label": "Namespace",
+            "datasource": {"type": "prometheus", "uid": "prometheus"},
+            "query": "label_values(kube_pod_info, namespace)",
+            "multi": true,
+            "includeAll": true,
+            "current": {"text": "All", "value": "$__all"}
+          }
+        ]
+      },
+      "panels": [
+        {
+          "id": 1,
+          "type": "stat",
+          "title": "Total Nodes",
+          "gridPos": {"x": 0, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "targets": [{"expr": "count(kube_node_info)", "legendFormat": "Nodes"}],
+          "options": {"colorMode": "background", "graphMode": "none", "textMode": "auto"}
+        },
+        {
+          "id": 2,
+          "type": "stat",
+          "title": "SPOT Nodes",
+          "gridPos": {"x": 4, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "targets": [{"expr": "count(kube_node_labels{label_karpenter_sh_capacity_type=\"spot\"}) or vector(0)", "legendFormat": "SPOT"}],
+          "options": {"colorMode": "background", "graphMode": "none"},
+          "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "green", "value": null}]}}}
+        },
+        {
+          "id": 3,
+          "type": "stat",
+          "title": "ON_DEMAND Nodes",
+          "gridPos": {"x": 8, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "targets": [{"expr": "count(kube_node_labels{label_karpenter_sh_capacity_type=\"on-demand\"}) or vector(0)", "legendFormat": "ON_DEMAND"}],
+          "options": {"colorMode": "background", "graphMode": "none"}
+        },
+        {
+          "id": 4,
+          "type": "stat",
+          "title": "Pending / Failed Pods",
+          "gridPos": {"x": 12, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "targets": [{"expr": "count(kube_pod_status_phase{phase=~\"Pending|Failed\"}) or vector(0)", "legendFormat": "Unhealthy"}],
+          "options": {"colorMode": "background", "graphMode": "none"},
+          "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "red", "value": 1}]}}}
+        },
+        {
+          "id": 5,
+          "type": "gauge",
+          "title": "Cluster CPU Utilization %",
+          "gridPos": {"x": 16, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "targets": [{"expr": "sum(rate(node_cpu_seconds_total{mode!=\"idle\"}[$interval])) / sum(machine_cpu_cores) * 100", "legendFormat": "CPU %"}],
+          "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 70}, {"color": "red", "value": 90}]}}}
+        },
+        {
+          "id": 6,
+          "type": "gauge",
+          "title": "Cluster Memory Utilization %",
+          "gridPos": {"x": 20, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "targets": [{"expr": "(1 - sum(node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes)) * 100", "legendFormat": "Memory %"}],
+          "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 70}, {"color": "red", "value": 90}]}}}
+        },
+        {
+          "id": 7,
+          "type": "timeseries",
+          "title": "Node Count by Role (7d)",
+          "description": "Shows Karpenter autoscaling — nodes provisioned and terminated per role",
+          "gridPos": {"x": 0, "y": 4, "w": 14, "h": 9},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "targets": [{"expr": "count by (label_role) (kube_node_labels)", "legendFormat": "{{label_role}}"}],
+          "options": {"tooltip": {"mode": "multi"}, "legend": {"displayMode": "table", "placement": "right"}},
+          "fieldConfig": {"defaults": {"custom": {"fillOpacity": 10, "lineWidth": 2, "spanNulls": false}}},
+          "timeRange": {"from": "now-7d", "to": "now"}
+        },
+        {
+          "id": 8,
+          "type": "bargauge",
+          "title": "Running Pods by Namespace",
+          "gridPos": {"x": 14, "y": 4, "w": 10, "h": 9},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "targets": [{"expr": "count by (namespace) (kube_pod_status_phase{phase=\"Running\", namespace=~\"$namespace\"})", "legendFormat": "{{namespace}}"}],
+          "options": {"orientation": "horizontal", "displayMode": "gradient", "valueMode": "color"},
+          "fieldConfig": {"defaults": {"thresholds": {"steps": [{"color": "green", "value": null}]}}}
+        }
+      ]
+    }
