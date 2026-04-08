@@ -173,6 +173,8 @@ kube-prometheus-stack:
         operator: Equal
 
   kube-state-metrics:
+    extraArgs:
+      - --metric-labels-allowlist=nodes=[role,karpenter.sh/capacity-type,node.kubernetes.io/instance-type]
     resources:
       requests:
         cpu: 50m
