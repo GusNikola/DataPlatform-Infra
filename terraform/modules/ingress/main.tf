@@ -42,6 +42,18 @@ resource "helm_release" "cert_manager" {
     { name = "webhook.tolerations[0].value", value = "core" },
     { name = "webhook.tolerations[0].effect", value = "NoSchedule" },
     { name = "webhook.tolerations[0].operator", value = "Equal" },
+    { name = "resources.requests.cpu", value = "50m" },
+    { name = "resources.requests.memory", value = "64Mi" },
+    { name = "resources.limits.cpu", value = "100m" },
+    { name = "resources.limits.memory", value = "128Mi" },
+    { name = "cainjector.resources.requests.cpu", value = "50m" },
+    { name = "cainjector.resources.requests.memory", value = "64Mi" },
+    { name = "cainjector.resources.limits.cpu", value = "100m" },
+    { name = "cainjector.resources.limits.memory", value = "128Mi" },
+    { name = "webhook.resources.requests.cpu", value = "50m" },
+    { name = "webhook.resources.requests.memory", value = "64Mi" },
+    { name = "webhook.resources.limits.cpu", value = "100m" },
+    { name = "webhook.resources.limits.memory", value = "128Mi" },
   ]
 
   depends_on = [helm_release.ingress_nginx]

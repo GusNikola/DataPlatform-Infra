@@ -11,6 +11,13 @@ kube-prometheus-stack:
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       retention: 7d
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
       storageSpec:
         volumeClaimTemplate:
           spec:
@@ -34,6 +41,21 @@ kube-prometheus-stack:
         value: platform
         effect: NoSchedule
         operator: Equal
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    sidecar:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
     readinessProbe:
       initialDelaySeconds: 30
     startupProbe:
@@ -87,6 +109,13 @@ kube-prometheus-stack:
 
   alertmanager:
     alertmanagerSpec:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          cpu: 200m
+          memory: 256Mi
       nodeSelector:
         role: platform
       tolerations:
@@ -114,6 +143,21 @@ kube-prometheus-stack:
               send_resolved: true
 
   prometheusOperator:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+    prometheusConfigReloader:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
     nodeSelector:
       role: platform
     tolerations:
@@ -123,6 +167,13 @@ kube-prometheus-stack:
         operator: Equal
 
   kube-state-metrics:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
     nodeSelector:
       role: platform
     tolerations:
@@ -133,6 +184,13 @@ kube-prometheus-stack:
 
   # node-exporter runs on ALL nodes (core, platform, spark-executor)
   prometheus-node-exporter:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
     tolerations:
       - key: role
         value: core
