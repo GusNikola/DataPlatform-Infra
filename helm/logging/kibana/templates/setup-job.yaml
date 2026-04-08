@@ -11,6 +11,11 @@ spec:
   template:
     spec:
       restartPolicy: OnFailure
+      volumes:
+        - name: setup-script
+          configMap:
+            name: kibana-setup-script
+            defaultMode: 0755
       containers:
         - name: setup
           image: alpine:3.19
@@ -19,94 +24,10 @@ spec:
             - -c
             - |
               apk add --no-cache curl > /dev/null 2>&1
-
-              KIBANA="http://kibana-kibana.logging.svc.cluster.local:5601"
-
-              echo "Waiting for Kibana..."
-              until curl -sf "$KIBANA/api/status" 2>/dev/null | grep -q '"level":"available"'; do
-                sleep 5
-              done
-              echo "Kibana ready."
-
-              # ── Index pattern ──────────────────────────────────────────────
-              curl -sf -X POST "$KIBANA/api/saved_objects/index-pattern/fluentbit?overwrite=true" \
-                -H "kbn-xsrf: true" -H "Content-Type: application/json" \
-                -d '{
-                  "attributes": {
-                    "title": "fluentbit-*",
-                    "timeFieldName": "@timestamp",
-                    "fields": "[]"
-                  }
-                }' > /dev/null
-              echo "Index pattern created."
-
-              # ── Saved search: Spark Job Logs ───────────────────────────────
-              curl -sf -X POST "$KIBANA/api/saved_objects/search/spark-job-logs?overwrite=true" \
-                -H "kbn-xsrf: true" -H "Content-Type: application/json" \
-                -d '{
-                  "attributes": {
-                    "title": "Spark Job Logs",
-                    "description": "All logs from Spark driver and executor pods",
-                    "columns": ["kubernetes.pod_name", "kubernetes.labels.spark-role", "level", "log"],
-                    "sort": [["@timestamp", "desc"]],
-                    "version": 1,
-                    "kibanaSavedObjectMeta": {
-                      "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"kubernetes.namespace_name: spark\",\"language\":\"kuery\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
-                    }
-                  },
-                  "references": [{
-                    "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
-                    "type": "index-pattern",
-                    "id": "fluentbit"
-                  }]
-                }' > /dev/null
-              echo "Saved search: Spark Job Logs created."
-
-              # ── Saved search: Platform Errors ──────────────────────────────
-              curl -sf -X POST "$KIBANA/api/saved_objects/search/platform-errors?overwrite=true" \
-                -H "kbn-xsrf: true" -H "Content-Type: application/json" \
-                -d '{
-                  "attributes": {
-                    "title": "Platform Errors and Warnings",
-                    "description": "ERROR and WARN level logs across all namespaces",
-                    "columns": ["kubernetes.namespace_name", "kubernetes.pod_name", "level", "log"],
-                    "sort": [["@timestamp", "desc"]],
-                    "version": 1,
-                    "kibanaSavedObjectMeta": {
-                      "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"level: ERROR or level: WARN\",\"language\":\"kuery\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
-                    }
-                  },
-                  "references": [{
-                    "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
-                    "type": "index-pattern",
-                    "id": "fluentbit"
-                  }]
-                }' > /dev/null
-              echo "Saved search: Platform Errors created."
-
-              # ── Saved search: Airflow Task Logs ───────────────────────────
-              curl -sf -X POST "$KIBANA/api/saved_objects/search/airflow-task-logs?overwrite=true" \
-                -H "kbn-xsrf: true" -H "Content-Type: application/json" \
-                -d '{
-                  "attributes": {
-                    "title": "Airflow Task Logs",
-                    "description": "Logs from Airflow scheduler, webserver and task pods",
-                    "columns": ["kubernetes.pod_name", "kubernetes.container_name", "level", "log"],
-                    "sort": [["@timestamp", "desc"]],
-                    "version": 1,
-                    "kibanaSavedObjectMeta": {
-                      "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"kubernetes.namespace_name: airflow\",\"language\":\"kuery\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
-                    }
-                  },
-                  "references": [{
-                    "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
-                    "type": "index-pattern",
-                    "id": "fluentbit"
-                  }]
-                }' > /dev/null
-              echo "Airflow Task Logs created."
-
-              echo "Kibana setup complete."
+              /scripts/setup.sh
+          volumeMounts:
+            - name: setup-script
+              mountPath: /scripts
           resources:
             requests:
               cpu: 50m
