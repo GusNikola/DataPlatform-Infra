@@ -53,8 +53,8 @@ data:
           "title": "Total Nodes",
           "gridPos": {"x": 0, "y": 0, "w": 4, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "count(kube_node_info)", "legendFormat": "Nodes"}],
-          "options": {"colorMode": "background", "graphMode": "none", "textMode": "auto"}
+          "targets": [{"expr": "count(kube_node_info)", "instant": true, "legendFormat": "Nodes", "refId": "A"}],
+          "options": {"colorMode": "background", "graphMode": "none", "textMode": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}}
         },
         {
           "id": 2,
@@ -62,8 +62,8 @@ data:
           "title": "SPOT Nodes",
           "gridPos": {"x": 4, "y": 0, "w": 4, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "count(kube_node_labels{label_karpenter_sh_capacity_type=\"spot\"}) or vector(0)", "legendFormat": "SPOT"}],
-          "options": {"colorMode": "background", "graphMode": "none"},
+          "targets": [{"expr": "count(kube_node_labels{label_karpenter_sh_capacity_type=\"spot\"}) or vector(0)", "instant": true, "legendFormat": "SPOT", "refId": "A"}],
+          "options": {"colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}},
           "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "green", "value": null}]}}}
         },
         {
@@ -72,8 +72,8 @@ data:
           "title": "ON_DEMAND Nodes",
           "gridPos": {"x": 8, "y": 0, "w": 4, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "count(kube_node_labels{label_karpenter_sh_capacity_type=\"on-demand\"}) or vector(0)", "legendFormat": "ON_DEMAND"}],
-          "options": {"colorMode": "background", "graphMode": "none"}
+          "targets": [{"expr": "count(kube_node_labels{label_karpenter_sh_capacity_type=\"on-demand\"}) or vector(0)", "instant": true, "legendFormat": "ON_DEMAND", "refId": "A"}],
+          "options": {"colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}}
         },
         {
           "id": 4,
@@ -81,8 +81,8 @@ data:
           "title": "Pending / Failed Pods",
           "gridPos": {"x": 12, "y": 0, "w": 4, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "count(kube_pod_status_phase{phase=~\"Pending|Failed\"}) or vector(0)", "legendFormat": "Unhealthy"}],
-          "options": {"colorMode": "background", "graphMode": "none"},
+          "targets": [{"expr": "count(kube_pod_status_phase{phase=~\"Pending|Failed\"}) or vector(0)", "instant": true, "legendFormat": "Unhealthy", "refId": "A"}],
+          "options": {"colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}},
           "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "red", "value": 1}]}}}
         },
         {
@@ -91,7 +91,8 @@ data:
           "title": "Cluster CPU Utilization %",
           "gridPos": {"x": 16, "y": 0, "w": 4, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "sum(rate(node_cpu_seconds_total{mode!=\"idle\"}[$__rate_interval])) / sum(machine_cpu_cores) * 100", "legendFormat": "CPU %"}],
+          "targets": [{"expr": "sum(rate(node_cpu_seconds_total{mode!=\"idle\"}[5m])) / sum(machine_cpu_cores) * 100", "instant": true, "legendFormat": "CPU %", "refId": "A"}],
+          "options": {"reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}},
           "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 70}, {"color": "red", "value": 90}]}}}
         },
         {
@@ -100,7 +101,8 @@ data:
           "title": "Cluster Memory Utilization %",
           "gridPos": {"x": 20, "y": 0, "w": 4, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "(1 - sum(node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes)) * 100", "legendFormat": "Memory %"}],
+          "targets": [{"expr": "(1 - sum(node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes)) * 100", "instant": true, "legendFormat": "Memory %", "refId": "A"}],
+          "options": {"reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}},
           "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 70}, {"color": "red", "value": 90}]}}}
         },
         {

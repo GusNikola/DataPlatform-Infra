@@ -44,8 +44,8 @@ data:
           "description": "1 = healthy, 0 = scheduler down",
           "gridPos": {"x": 0, "y": 0, "w": 6, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "airflow_scheduler_heartbeat or vector(0)", "legendFormat": "Heartbeat"}],
-          "options": {"colorMode": "background", "graphMode": "none"},
+          "targets": [{"expr": "airflow_scheduler_heartbeat or vector(0)", "instant": true, "legendFormat": "Heartbeat", "refId": "A"}],
+          "options": {"colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}},
           "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "red", "value": null}, {"color": "green", "value": 1}]}}}
         },
         {
@@ -54,8 +54,8 @@ data:
           "title": "DAG Runs Succeeded (24h)",
           "gridPos": {"x": 6, "y": 0, "w": 6, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "increase(airflow_dag_run_duration_success_count[24h]) or vector(0)", "legendFormat": "Succeeded"}],
-          "options": {"colorMode": "background", "graphMode": "none"},
+          "targets": [{"expr": "increase(airflow_dag_run_duration_success_count[24h]) or vector(0)", "instant": true, "legendFormat": "Succeeded", "refId": "A"}],
+          "options": {"colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}},
           "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "green", "value": null}]}}}
         },
         {
@@ -64,8 +64,8 @@ data:
           "title": "DAG Runs Failed (24h)",
           "gridPos": {"x": 12, "y": 0, "w": 6, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "increase(airflow_dag_run_duration_failed_count[24h]) or vector(0)", "legendFormat": "Failed"}],
-          "options": {"colorMode": "background", "graphMode": "none"},
+          "targets": [{"expr": "increase(airflow_dag_run_duration_failed_count[24h]) or vector(0)", "instant": true, "legendFormat": "Failed", "refId": "A"}],
+          "options": {"colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}},
           "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "red", "value": 1}]}}}
         },
         {
@@ -74,8 +74,8 @@ data:
           "title": "Log Ingestion Rate (records/s)",
           "gridPos": {"x": 18, "y": 0, "w": 6, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "sum(rate(fluentbit_input_records_total[$__rate_interval])) or vector(0)", "legendFormat": "records/s"}],
-          "options": {"colorMode": "value", "graphMode": "area"},
+          "targets": [{"expr": "sum(rate(fluentbit_input_records_total[5m])) or vector(0)", "instant": true, "legendFormat": "records/s", "refId": "A"}],
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}},
           "fieldConfig": {"defaults": {"unit": "short", "color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "blue", "value": null}]}}}
         },
         {
