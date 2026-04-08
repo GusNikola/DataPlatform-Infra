@@ -130,7 +130,6 @@ data:
           "description": "All ERROR level logs across the platform in the last hour",
           "columns": ["kubernetes.namespace_name","kubernetes.pod_name","level","log"],
           "sort": [["@timestamp","desc"]],
-          "timeRestore": true,
           "version": 1,
           "kibanaSavedObjectMeta": {
             "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"level: ERROR\",\"language\":\"kuery\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
