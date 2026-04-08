@@ -43,7 +43,7 @@ data:
           "title": "Active Spark Executor Pods",
           "gridPos": {"x": 0, "y": 0, "w": 6, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "targets": [{"expr": "count(kube_pod_info{namespace=\"spark\"}) or vector(0)", "instant": true, "legendFormat": "Executors", "refId": "A"}],
+          "targets": [{"expr": "count(kube_pod_info{namespace=\"spark\", created_by_kind=\"SparkApplication\"}) or vector(0)", "instant": true, "legendFormat": "Executors", "refId": "A"}],
           "options": {"colorMode": "background", "graphMode": "none", "textMode": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}},
           "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "blue", "value": null}]}}}
         },
@@ -60,7 +60,7 @@ data:
         {
           "id": 3,
           "type": "stat",
-          "title": "Spark Jobs Succeeded (24h)",
+          "title": "Spark Jobs Succeeded",
           "gridPos": {"x": 12, "y": 0, "w": 6, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [{"expr": "count(kube_pod_status_phase{namespace=\"spark\", phase=\"Succeeded\"}) or vector(0)", "instant": true, "legendFormat": "Succeeded", "refId": "A"}],
@@ -70,7 +70,7 @@ data:
         {
           "id": 4,
           "type": "stat",
-          "title": "Spark Jobs Failed (24h)",
+          "title": "Spark Jobs Failed",
           "gridPos": {"x": 18, "y": 0, "w": 6, "h": 4},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [{"expr": "count(kube_pod_status_phase{namespace=\"spark\", phase=\"Failed\"}) or vector(0)", "instant": true, "legendFormat": "Failed", "refId": "A"}],
@@ -114,11 +114,11 @@ data:
         {
           "id": 7,
           "type": "timeseries",
-          "title": "Karpenter Nodes Provisioned over Time",
+          "title": "Spark Executor Nodes over Time",
           "gridPos": {"x": 12, "y": 13, "w": 12, "h": 8},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
-            {"expr": "karpenter_cluster_state_node_count or vector(0)", "legendFormat": "{{ "{{" }}nodepool{{ "}}" }}"}
+            {"expr": "count(kube_node_labels{label_role=\"spark-executor\"}) or vector(0)", "legendFormat": "spark-executor nodes"}
           ],
           "options": {"tooltip": {"mode": "multi"}, "legend": {"displayMode": "list", "placement": "bottom"}},
           "fieldConfig": {"defaults": {"custom": {"fillOpacity": 10, "lineWidth": 2}}}
