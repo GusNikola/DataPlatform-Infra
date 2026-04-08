@@ -11,7 +11,7 @@ spec:
       - logging
   selector:
     matchLabels:
-      app.kubernetes.io/name: fluent-bit
+      app.kubernetes.io/name: fluentbit
   endpoints:
     - port: http
       path: /api/v1/metrics/prometheus
@@ -27,7 +27,7 @@ metadata:
 spec:
   namespaceSelector:
     matchNames:
-      - karpenter
+      - kube-system
   selector:
     matchLabels:
       app.kubernetes.io/name: karpenter
@@ -37,7 +37,7 @@ spec:
       interval: 30s
 ---
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
   name: spark-operator
   namespace: monitoring
@@ -49,8 +49,8 @@ spec:
       - spark-operator
   selector:
     matchLabels:
-      app.kubernetes.io/name: spark-operator
-  endpoints:
+      app.kubernetes.io/component: controller
+  podMetricsEndpoints:
     - port: metrics
       path: /metrics
       interval: 30s
@@ -70,6 +70,6 @@ spec:
     matchLabels:
       component: statsd
   endpoints:
-    - port: prom-metrics
+    - port: statsd-scrape
       path: /metrics
       interval: 30s

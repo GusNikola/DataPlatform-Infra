@@ -39,7 +39,7 @@ data:
             "type": "query",
             "label": "Node",
             "datasource": {"type": "prometheus", "uid": "prometheus"},
-            "query": "label_values(kube_node_info, node)",
+            "query": "label_values(node_cpu_seconds_total, instance)",
             "multi": true,
             "includeAll": true,
             "current": {"text": "All", "value": "$__all"}
@@ -65,8 +65,8 @@ data:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
             {
-              "expr": "sum by (node) (rate(node_cpu_seconds_total{mode!=\"idle\", node=~\"$node\"}[$__rate_interval]))",
-              "legendFormat": "{{ "{{" }}node{{ "}}" }}"
+              "expr": "sum by (instance) (rate(node_cpu_seconds_total{mode!=\"idle\", instance=~\"$node\"}[$__rate_interval]))",
+              "legendFormat": "{{ "{{" }}instance{{ "}}" }}"
             }
           ],
           "fieldConfig": {"defaults": {"unit": "short", "custom": {"fillOpacity": 10, "lineWidth": 2}}},
@@ -80,8 +80,8 @@ data:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
             {
-              "expr": "node_memory_MemTotal_bytes{node=~\"$node\"} - node_memory_MemAvailable_bytes{node=~\"$node\"}",
-              "legendFormat": "{{ "{{" }}node{{ "}}" }}"
+              "expr": "node_memory_MemTotal_bytes{instance=~\"$node\"} - node_memory_MemAvailable_bytes{instance=~\"$node\"}",
+              "legendFormat": "{{ "{{" }}instance{{ "}}" }}"
             }
           ],
           "fieldConfig": {"defaults": {"unit": "bytes", "custom": {"fillOpacity": 10, "lineWidth": 2}}},
@@ -94,8 +94,8 @@ data:
           "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
-            {"expr": "sum by (node) (rate(node_disk_reads_completed_total{node=~\"$node\"}[$__rate_interval]))", "legendFormat": "read {{ "{{" }}node{{ "}}" }}"},
-            {"expr": "sum by (node) (rate(node_disk_writes_completed_total{node=~\"$node\"}[$__rate_interval]))", "legendFormat": "write {{ "{{" }}node{{ "}}" }}"}
+            {"expr": "sum by (instance) (rate(node_disk_reads_completed_total{instance=~\"$node\"}[$__rate_interval]))", "legendFormat": "read {{ "{{" }}instance{{ "}}" }}"},
+            {"expr": "sum by (instance) (rate(node_disk_writes_completed_total{instance=~\"$node\"}[$__rate_interval]))", "legendFormat": "write {{ "{{" }}instance{{ "}}" }}"}
           ],
           "fieldConfig": {"defaults": {"unit": "iops", "custom": {"fillOpacity": 5, "lineWidth": 2}}},
           "options": {"tooltip": {"mode": "multi"}}
@@ -107,8 +107,8 @@ data:
           "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "targets": [
-            {"expr": "sum by (node) (rate(node_network_receive_bytes_total{node=~\"$node\", device!~\"lo|docker.*|veth.*\"}[$__rate_interval]))", "legendFormat": "in {{ "{{" }}node{{ "}}" }}"},
-            {"expr": "sum by (node) (rate(node_network_transmit_bytes_total{node=~\"$node\", device!~\"lo|docker.*|veth.*\"}[$__rate_interval]))", "legendFormat": "out {{ "{{" }}node{{ "}}" }}"}
+            {"expr": "sum by (instance) (rate(node_network_receive_bytes_total{instance=~\"$node\", device!~\"lo|docker.*|veth.*\"}[$__rate_interval]))", "legendFormat": "in {{ "{{" }}instance{{ "}}" }}"},
+            {"expr": "sum by (instance) (rate(node_network_transmit_bytes_total{instance=~\"$node\", device!~\"lo|docker.*|veth.*\"}[$__rate_interval]))", "legendFormat": "out {{ "{{" }}instance{{ "}}" }}"}
           ],
           "fieldConfig": {"defaults": {"unit": "Bps", "custom": {"fillOpacity": 5, "lineWidth": 2}}},
           "options": {"tooltip": {"mode": "multi"}}
