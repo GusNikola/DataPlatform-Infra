@@ -20,7 +20,7 @@ lets_encrypt_email   = "ngusic@europecloudatlas.com"
 grafana_admin_password = "0e75705411"
 
 # EKS
-eks_public_access_cidrs = ["24.135.66.25/32"]
+eks_public_access_cidrs = ["188.120.119.207/32"]
 kubernetes_version = "1.32"
 
 node_groups = {
