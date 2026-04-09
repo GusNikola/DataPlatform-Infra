@@ -23,7 +23,7 @@ elasticsearch:
 
   persistence:
     enabled: true
-    size: 15Gi
+    size: 30Gi
     storageClass: gp2
 
   volumeClaimTemplate:
@@ -31,4 +31,4 @@ elasticsearch:
     accessModes: ["ReadWriteOnce"]
     resources:
       requests:
-        storage: 15Gi
+        storage: 30Gi
