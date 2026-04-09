@@ -13,17 +13,17 @@ elasticsearch:
 
   resources:
     requests:
-      cpu: 500m
-      memory: 2Gi
+      cpu: 250m
+      memory: 1Gi
     limits:
-      cpu: 2000m
-      memory: 2Gi
+      cpu: 1000m
+      memory: 1Gi
 
-  esJavaOpts: "-Xmx1g -Xms1g"
+  esJavaOpts: "-Xmx512m -Xms512m"
 
   persistence:
     enabled: true
-    size: 30Gi
+    size: 15Gi
     storageClass: gp2
 
   volumeClaimTemplate:
@@ -31,4 +31,4 @@ elasticsearch:
     accessModes: ["ReadWriteOnce"]
     resources:
       requests:
-        storage: 30Gi
+        storage: 15Gi

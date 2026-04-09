@@ -27,6 +27,9 @@ platformNodePool:
     - m5a.xlarge
     - m5.large
     - m5a.large
+  capacityTypes:
+    - spot
+    - on-demand
   availabilityZones:
     - eu-central-1a
     - eu-central-1b
@@ -37,6 +40,8 @@ generalNodePool:
   instanceTypes:
     - m5.large
     - m5a.large
+  capacityTypes:
+    - on-demand
   availabilityZones:
     - eu-central-1a
     - eu-central-1b

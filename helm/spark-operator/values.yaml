@@ -23,7 +23,7 @@ spark-operator:
         value: platform
         effect: NoSchedule
         operator: Equal
-    replicas: 2
+    replicas: 1
     failurePolicy: Ignore
     resources:
       requests:
