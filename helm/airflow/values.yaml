@@ -13,6 +13,14 @@ airflow:
     create: false
     name: airflow
 
+  users:
+    - username: viewer
+      password: viewer123
+      role: User
+      email: viewer@dataplatform.com
+      firstName: Viewer
+      lastName: User
+
   workers:
     serviceAccount:
       annotations:
