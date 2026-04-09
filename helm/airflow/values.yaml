@@ -70,16 +70,26 @@ airflow:
 
   webserver:
     nodeSelector:
-      role: platform
+      role: core
     tolerations:
       - key: role
-        value: platform
+        value: core
         effect: NoSchedule
         operator: Equal
     startupProbe:
-      failureThreshold: 18
+      failureThreshold: 30
       periodSeconds: 10
       timeoutSeconds: 20
+    livenessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 30
+      failureThreshold: 20
+      periodSeconds: 10
+    readinessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 30
+      failureThreshold: 20
+      periodSeconds: 10
     resources:
       requests:
         cpu: 200m
@@ -149,6 +159,11 @@ airflow:
   config:
     core:
       load_examples: "False"
+    webserver:
+      worker_class: "gthread"
+      workers: "2"
+      threads: "4"
+      web_server_worker_timeout: "120"
     logging:
       remote_logging: "True"
       remote_base_log_folder: "s3://dataplatform-dev-data-866376946262/airflow-logs/"
