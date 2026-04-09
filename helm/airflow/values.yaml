@@ -171,7 +171,7 @@ airflow:
       encrypt_s3_logs: "False"
     kubernetes_executor:
       namespace: airflow
-      delete_worker_pods: "True"
+      delete_worker_pods: "False"
       delete_worker_pods_on_failure: "False"
 
   extraEnv: |
