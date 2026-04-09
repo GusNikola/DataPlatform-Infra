@@ -1,34 +1,38 @@
 apiVersion: sparkoperator.k8s.io/v1beta2
 kind: SparkApplication
 metadata:
-  name: spark-pi
+  name: nyc-taxi-aggregation
   namespace: spark
 spec:
-  type: Scala
+  type: Python
+  pythonVersion: "3"
   mode: cluster
-  image: "866376946262.dkr.ecr.eu-central-1.amazonaws.com/dataplatform-dev/spark:3.5-jvm"
+  image: "866376946262.dkr.ecr.eu-central-1.amazonaws.com/dataplatform-dev/spark:3.5-py"
   imagePullPolicy: Always
-  mainClass: org.apache.spark.examples.SparkPi
-  mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.3.jar"
-  arguments:
-    - "1000"
+  mainApplicationFile: "s3a://dataplatform-dev-data-866376946262/scripts/nyc_taxi_hourly_aggregation.py"
   sparkVersion: "3.5.3"
 
   restartPolicy:
-    type: Never
+    type: OnFailure
+    onFailureRetries: 2
+    onFailureRetryInterval: 10
+    onSubmissionFailureRetries: 3
+    onSubmissionFailureRetryInterval: 20
 
   sparkConf:
-    "spark.eventLog.enabled": "true"
-    "spark.eventLog.dir": "s3a://dataplatform-dev-data-866376946262/eventlogs/"
     "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.WebIdentityTokenCredentialsProvider"
     "spark.hadoop.fs.s3a.region": "eu-central-1"
     "spark.hadoop.fs.s3a.endpoint": "s3.eu-central-1.amazonaws.com"
+    "spark.eventLog.enabled": "true"
+    "spark.eventLog.dir": "s3a://dataplatform-dev-data-866376946262/eventlogs/"
+    "spark.executor.gracefulDecommission.timeout": "120s"
+    "spark.task.maxFailures": "4"
 
   driver:
     cores: 1
     coreRequest: "200m"
-    memory: "512m"
+    memory: "1g"
     serviceAccount: spark
     nodeSelector:
       role: platform
@@ -41,10 +45,10 @@ spec:
       version: "3.5.3"
 
   executor:
-    cores: 1
-    coreRequest: "500m"
-    instances: 1
-    memory: "1g"
+    cores: 2
+    coreRequest: "1500m"
+    instances: 2
+    memory: "4g"
     serviceAccount: spark
     nodeSelector:
       role: spark-executor
@@ -53,6 +57,6 @@ spec:
         operator: Equal
         value: spark-executor
         effect: NoSchedule
-    terminationGracePeriodSeconds: 30
+    terminationGracePeriodSeconds: 120
     labels:
       version: "3.5.3"

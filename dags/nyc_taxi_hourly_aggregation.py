@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 
 
 with DAG(
-    dag_id="spark_nyc_taxi",
+    dag_id="nyc_taxi_hourly_aggregation",
     start_date=datetime(2024, 1, 1),
     schedule=None,
     catchup=False,
@@ -25,7 +25,7 @@ with DAG(
 
     SparkKubernetesOperator(
         task_id="run_nyc_taxi_aggregation",
-        application_file="spark_nyc_taxi_application.yaml",
+        application_file="nyc_taxi_hourly_aggregation_application.yaml",
         namespace="spark",
         kubernetes_conn_id="kubernetes_default",
         # do_xcom_push=False prevents the XCom sidecar bug in cncf.kubernetes

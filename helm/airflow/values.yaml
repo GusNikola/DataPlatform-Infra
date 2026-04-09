@@ -75,12 +75,15 @@ airflow:
 
   webserver:
     nodeSelector:
-      role: core
+      role: platform
     tolerations:
       - key: role
-        value: core
+        value: platform
         effect: NoSchedule
         operator: Equal
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: "arn:aws:iam::866376946262:role/dataplatform-dev-airflow-irsa"
     startupProbe:
       failureThreshold: 30
       periodSeconds: 10

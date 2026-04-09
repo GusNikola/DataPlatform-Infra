@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 
 
 with DAG(
-    dag_id="spark_pi",
+    dag_id="spark_cluster_benchmark",
     start_date=datetime(2024, 1, 1),
     schedule=None,
     catchup=False,
@@ -22,8 +22,8 @@ with DAG(
 ) as dag:
 
     SparkKubernetesOperator(
-        task_id="run_spark_pi",
-        application_file="spark_pi_application.yaml",
+        task_id="run_spark_cluster_benchmark",
+        application_file="spark_cluster_benchmark_application.yaml",
         namespace="spark",
         kubernetes_conn_id="kubernetes_default",
         do_xcom_push=False,

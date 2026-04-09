@@ -23,7 +23,7 @@ def pipeline_summary(**context):
 
 
 with DAG(
-    dag_id="nyc_taxi_pipeline",
+    dag_id="nyc_taxi_analytics_suite",
     start_date=datetime(2024, 1, 1),
     schedule=None,
     catchup=False,
@@ -39,7 +39,7 @@ with DAG(
 
     hourly_agg = SparkKubernetesOperator(
         task_id="hourly_aggregation",
-        application_file="spark_nyc_taxi_application.yaml",
+        application_file="nyc_taxi_hourly_aggregation_application.yaml",
         namespace="spark",
         kubernetes_conn_id="kubernetes_default",
         do_xcom_push=False,

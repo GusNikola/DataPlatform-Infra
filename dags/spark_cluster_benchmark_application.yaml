@@ -1,7 +1,7 @@
 apiVersion: sparkoperator.k8s.io/v1beta2
 kind: SparkApplication
 metadata:
-  name: nyc-taxi-aggregation
+  name: spark-cluster-benchmark
   namespace: spark
 spec:
   type: Python
@@ -9,30 +9,24 @@ spec:
   mode: cluster
   image: "866376946262.dkr.ecr.eu-central-1.amazonaws.com/dataplatform-dev/spark:3.5-py"
   imagePullPolicy: Always
-  mainApplicationFile: "s3a://dataplatform-dev-data-866376946262/scripts/nyc_taxi_job.py"
+  mainApplicationFile: "s3a://dataplatform-dev-data-866376946262/scripts/spark_cluster_benchmark.py"
   sparkVersion: "3.5.3"
 
   restartPolicy:
-    type: OnFailure
-    onFailureRetries: 2
-    onFailureRetryInterval: 10
-    onSubmissionFailureRetries: 3
-    onSubmissionFailureRetryInterval: 20
+    type: Never
 
   sparkConf:
+    "spark.eventLog.enabled": "true"
+    "spark.eventLog.dir": "s3a://dataplatform-dev-data-866376946262/eventlogs/"
     "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.WebIdentityTokenCredentialsProvider"
     "spark.hadoop.fs.s3a.region": "eu-central-1"
     "spark.hadoop.fs.s3a.endpoint": "s3.eu-central-1.amazonaws.com"
-    "spark.eventLog.enabled": "true"
-    "spark.eventLog.dir": "s3a://dataplatform-dev-data-866376946262/eventlogs/"
-    "spark.executor.gracefulDecommission.timeout": "120s"
-    "spark.task.maxFailures": "4"
 
   driver:
     cores: 1
     coreRequest: "200m"
-    memory: "1g"
+    memory: "512m"
     serviceAccount: spark
     nodeSelector:
       role: platform
@@ -45,10 +39,10 @@ spec:
       version: "3.5.3"
 
   executor:
-    cores: 2
-    coreRequest: "1500m"
-    instances: 2
-    memory: "4g"
+    cores: 1
+    coreRequest: "500m"
+    instances: 1
+    memory: "1g"
     serviceAccount: spark
     nodeSelector:
       role: spark-executor
@@ -57,6 +51,6 @@ spec:
         operator: Equal
         value: spark-executor
         effect: NoSchedule
-    terminationGracePeriodSeconds: 120
+    terminationGracePeriodSeconds: 30
     labels:
       version: "3.5.3"

@@ -29,7 +29,7 @@ def report(**context):
 
 
 with DAG(
-    dag_id="hello_world",
+    dag_id="platform_health_check",
     start_date=datetime(2024, 1, 1),
     schedule=None,
     catchup=False,
