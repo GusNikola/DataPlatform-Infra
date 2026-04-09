@@ -1,0 +1,58 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: spark-pi
+  namespace: spark
+spec:
+  type: Scala
+  mode: cluster
+  image: "866376946262.dkr.ecr.eu-central-1.amazonaws.com/dataplatform-dev/spark:3.5-jvm"
+  imagePullPolicy: Always
+  mainClass: org.apache.spark.examples.SparkPi
+  mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.3.jar"
+  arguments:
+    - "1000"
+  sparkVersion: "3.5.3"
+
+  restartPolicy:
+    type: Never
+
+  sparkConf:
+    "spark.eventLog.enabled": "true"
+    "spark.eventLog.dir": "s3a://dataplatform-dev-data-866376946262/eventlogs/"
+    "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
+    "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.WebIdentityTokenCredentialsProvider"
+    "spark.hadoop.fs.s3a.region": "eu-central-1"
+    "spark.hadoop.fs.s3a.endpoint": "s3.eu-central-1.amazonaws.com"
+
+  driver:
+    cores: 1
+    coreRequest: "200m"
+    memory: "512m"
+    serviceAccount: spark
+    nodeSelector:
+      role: platform
+    tolerations:
+      - key: role
+        operator: Equal
+        value: platform
+        effect: NoSchedule
+    labels:
+      version: "3.5.3"
+
+  executor:
+    cores: 1
+    coreRequest: "500m"
+    instances: 1
+    memory: "1g"
+    serviceAccount: spark
+    nodeSelector:
+      role: spark-executor
+    tolerations:
+      - key: role
+        operator: Equal
+        value: spark-executor
+        effect: NoSchedule
+    terminationGracePeriodSeconds: 30
+    labels:
+      version: "3.5.3"
