@@ -268,6 +268,13 @@ resource "aws_iam_role_policy_attachment" "karpenter_controller" {
   policy_arn = aws_iam_policy.karpenter_controller.arn
 }
 
+resource "aws_iam_role_tags" "node_karpenter_discovery" {
+  role_name = var.node_role_name
+  tags = {
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+  }
+}
+
 resource "aws_sqs_queue" "interruption" {
   name                      = var.cluster_name
   message_retention_seconds = 300
@@ -275,6 +282,9 @@ resource "aws_sqs_queue" "interruption" {
 
   tags = var.tags
 }
+
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
 resource "aws_sqs_queue_policy" "interruption" {
   queue_url = aws_sqs_queue.interruption.url
@@ -284,9 +294,14 @@ resource "aws_sqs_queue_policy" "interruption" {
     Statement = [
       {
         Effect    = "Allow"
-        Principal = { Service = ["events.amazonaws.com", "sqs.amazonaws.com"] }
+        Principal = { Service = "events.amazonaws.com" }
         Action    = "sqs:SendMessage"
         Resource  = aws_sqs_queue.interruption.arn
+        Condition = {
+          ArnLike = {
+            "aws:SourceArn" = "arn:aws:events:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:rule/*"
+          }
+        }
       }
     ]
   })

@@ -89,20 +89,22 @@ resource "aws_iam_policy" "airflow" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "AirflowS3Access"
+        Sid    = "AirflowListBucket"
         Effect = "Allow"
-        Action = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject",
-          "s3:ListBucket",
-          "s3:GetBucketLocation",
-        ]
-        Resource = [
-          var.data_bucket_arn,
-          "${var.data_bucket_arn}/dags/*",
-          "${var.data_bucket_arn}/airflow-logs/*",
-        ]
+        Action = ["s3:ListBucket", "s3:GetBucketLocation"]
+        Resource = [var.data_bucket_arn]
+      },
+      {
+        Sid    = "AirflowReadDags"
+        Effect = "Allow"
+        Action = ["s3:GetObject"]
+        Resource = ["${var.data_bucket_arn}/dags/*"]
+      },
+      {
+        Sid    = "AirflowWriteLogs"
+        Effect = "Allow"
+        Action = ["s3:GetObject", "s3:PutObject"]
+        Resource = ["${var.data_bucket_arn}/airflow-logs/*"]
       }
     ]
   })

@@ -9,11 +9,6 @@ controller:
       effect: NoSchedule
       operator: Equal
 
-admissionWebhooks:
-  enabled: false
-  patch:
-    enabled: false
-
   service:
     type: LoadBalancer
     annotations:
@@ -30,3 +25,8 @@ admissionWebhooks:
     proxy-real-ip-cidr: "10.0.0.0/16"
     use-http2: "true"
     ssl-redirect: "true"
+
+admissionWebhooks:
+  enabled: false
+  patch:
+    enabled: false

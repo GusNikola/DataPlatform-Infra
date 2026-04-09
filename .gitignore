@@ -2,7 +2,6 @@
 **/.terraform/
 **/*.tfstate
 **/*.tfstate.*
-**/.terraform.lock.hcl
 **/errored.tfstate
 
 # Secrets — never commit

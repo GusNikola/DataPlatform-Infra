@@ -61,6 +61,8 @@ resource "aws_eks_cluster" "this" {
     public_access_cidrs     = var.public_access_cidrs
   }
 
+  enabled_cluster_log_types = var.cluster_log_types
+
   tags = merge(var.tags, {
     Name = var.cluster_name
   })

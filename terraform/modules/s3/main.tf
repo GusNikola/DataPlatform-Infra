@@ -43,5 +43,26 @@ resource "aws_s3_bucket_lifecycle_configuration" "data" {
       days          = var.ia_transition_days
       storage_class = "STANDARD_IA"
     }
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+
+  rule {
+    id     = "expire-airflow-logs"
+    status = "Enabled"
+    filter { prefix = "airflow-logs/" }
+    expiration {
+      days = var.airflow_logs_expiry_days
+    }
+  }
+
+  rule {
+    id     = "expire-spark-eventlogs"
+    status = "Enabled"
+    filter { prefix = "eventlogs/" }
+    expiration {
+      days = var.spark_eventlogs_expiry_days
+    }
   }
 }

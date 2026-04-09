@@ -25,9 +25,14 @@ variable "endpoint_public_access" {
 }
 
 variable "public_access_cidrs" {
-  description = "CIDRs allowed to access the EKS public API endpoint"
+  description = "CIDRs allowed to access the EKS public API endpoint. Must be set explicitly — no default to prevent accidental open access."
   type        = list(string)
-  default     = ["0.0.0.0/0"]
+}
+
+variable "cluster_log_types" {
+  description = "EKS control plane log types to enable"
+  type        = list(string)
+  default     = ["api", "audit", "authenticator"]
 }
 
 variable "node_groups" {

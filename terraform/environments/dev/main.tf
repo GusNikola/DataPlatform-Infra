@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 locals {
   name_prefix = "${var.project_name}-${var.environment}"
   common_tags = {
@@ -57,7 +59,7 @@ module "karpenter" {
 module "s3" {
   source = "../../modules/s3"
 
-  bucket_name        = "${local.name_prefix}-data-866376946262"
+  bucket_name        = "${local.name_prefix}-data-${data.aws_caller_identity.current.account_id}"
   versioning_enabled = false
   ia_transition_days = 30
   tags               = local.common_tags
