@@ -179,6 +179,11 @@ airflow:
       delete_worker_pods: "True"
       delete_worker_pods_on_failure: "False"
 
+  pools:
+    spark_submissions:
+      slots: 2
+      description: "Limits concurrent Spark submissions to prevent spark-operator controller deadlock"
+
   extraEnv: |
     - name: AWS_DEFAULT_REGION
       value: eu-central-1

@@ -33,4 +33,5 @@ with DAG(
         # on the Spark driver pod (which has no xcom sidecar container).
         # The operator monitors the driver pod to completion via KubernetesPodOperator.
         do_xcom_push=False,
+        pool="spark_submissions",
     )

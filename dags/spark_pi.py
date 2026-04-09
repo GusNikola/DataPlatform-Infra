@@ -27,4 +27,5 @@ with DAG(
         namespace="spark",
         kubernetes_conn_id="kubernetes_default",
         do_xcom_push=False,
+        pool="spark_submissions",
     )

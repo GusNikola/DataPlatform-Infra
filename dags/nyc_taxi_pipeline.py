@@ -43,6 +43,7 @@ with DAG(
         namespace="spark",
         kubernetes_conn_id="kubernetes_default",
         do_xcom_push=False,
+        pool="spark_submissions",
     )
 
     trip_stats = SparkKubernetesOperator(
@@ -51,6 +52,7 @@ with DAG(
         namespace="spark",
         kubernetes_conn_id="kubernetes_default",
         do_xcom_push=False,
+        pool="spark_submissions",
     )
 
     tip_analysis = SparkKubernetesOperator(
@@ -59,6 +61,7 @@ with DAG(
         namespace="spark",
         kubernetes_conn_id="kubernetes_default",
         do_xcom_push=False,
+        pool="spark_submissions",
     )
 
     summary = PythonOperator(
